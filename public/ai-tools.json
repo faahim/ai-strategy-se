@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "category": "Chatbots",
+    "icon": "",
+    "description": "AI-powered conversational assistants"
+  },
+  {
+    "id": 2,
+    "category": "Image Generation",
+    "icon": "",
+    "description": "AI tools for creating and editing images"
+  },
+  {
+    "id": 3,
+    "category": "Code Assistance",
+    "icon": "",
+    "description": "AI-powered coding tools and assistants"
+  }
+]
