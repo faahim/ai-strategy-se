@@ -1,11 +1,33 @@
 ---
+import aiTools from '../../public/ai-tools.json';
 ---
 
+<div>
+  <div>
+    <h1>Suggestions!</h1>
+    <p>Welcome to AI tools' suggestions page</p>
+  </div>
 
-<div class="w-full h-screen flex justify-center items-center bg-gray-900">
-	<div class="text-center">
-		<h1 class="text-6xl font-bold text-white mb-4">Suggestions!</h1>
-		<p class="text-xl text-slate-400">Welcome to AI tools' suggestions page</p>
-	</div>
+  <div>
+    {
+      aiTools.map((tool) => (
+        <div>
+          <div>
+            {/* Placeholder for future image assets */}
+            {tool.icon && <img src={tool.icon} alt={`${tool.name} icon`} />}
+          </div>
+          <h2>{tool.name}</h2>
+          <p>{tool.description}</p>
+          <div>
+            {tool.tags?.map((tag) => (
+              <span>{tag}</span>
+            ))}
+          </div>
+          <a href={tool.url} target="_blank" rel="noopener noreferrer">
+            Visit Tool
+          </a>
+        </div>
+      ))
+    }
+  </div>
 </div>
-

@@ -1,20 +1,74 @@
 [
   {
-    "id": 1,
-    "category": "Chatbots",
+    "name": "ChatGPT",
+    "description": "Advanced language model for conversation, writing, and problem-solving",
+    "url": "https://chat.openai.com",
     "icon": "",
-    "description": "AI-powered conversational assistants"
+    "category": "Language Models",
+    "tags": ["Chatbot", "Writing", "AI Assistant"]
   },
   {
-    "id": 2,
+    "name": "Midjourney",
+    "description": "AI art generator creating stunning images from text descriptions",
+    "url": "https://www.midjourney.com",
+    "icon": "",
     "category": "Image Generation",
-    "icon": "",
-    "description": "AI tools for creating and editing images"
+    "tags": ["Art", "Image Generation", "Creative"]
   },
   {
-    "id": 3,
-    "category": "Code Assistance",
+    "name": "Claude",
+    "description": "Anthropic's AI assistant for analysis, writing, and coding",
+    "url": "https://claude.ai",
     "icon": "",
-    "description": "AI-powered coding tools and assistants"
+    "category": "Language Models",
+    "tags": ["AI Assistant", "Writing", "Analysis"]
+  },
+  {
+    "name": "DALL-E",
+    "description": "OpenAI's image generation model creating art from text descriptions",
+    "url": "https://labs.openai.com",
+    "icon": "",
+    "category": "Image Generation",
+    "tags": ["Art", "Image Generation", "Creative"]
+  },
+  {
+    "name": "GitHub Copilot",
+    "description": "AI-powered code completion and suggestion tool",
+    "url": "https://github.com/features/copilot",
+    "icon": "",
+    "category": "Development",
+    "tags": ["Coding", "Development", "AI Assistant"]
+  },
+  {
+    "name": "Jasper",
+    "description": "AI content creation platform for marketing and business",
+    "url": "https://www.jasper.ai",
+    "icon": "",
+    "category": "Content Creation",
+    "tags": ["Content Creation", "Marketing", "Writing"]
+  },
+  {
+    "name": "Stable Diffusion",
+    "description": "Open-source AI art generator with powerful image creation capabilities",
+    "url": "https://stability.ai",
+    "icon": "",
+    "category": "Image Generation",
+    "tags": ["Art", "Image Generation", "Open Source"]
+  },
+  {
+    "name": "Grammarly",
+    "description": "AI-powered writing assistant for grammar and style improvement",
+    "url": "https://www.grammarly.com",
+    "icon": "",
+    "category": "Writing",
+    "tags": ["Writing", "Grammar", "Productivity"]
+  },
+  {
+    "name": "Otter.ai",
+    "description": "AI transcription and note-taking assistant for meetings",
+    "url": "https://otter.ai",
+    "icon": "",
+    "category": "Productivity",
+    "tags": ["Transcription", "Productivity", "Meetings"]
   }
 ]
