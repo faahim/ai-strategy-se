@@ -1,58 +1,36 @@
 import { useState } from "react";
-
-interface Tool {
-  name: string;
-  description: string;
-  tags: string[];
-}
-
-interface ToolsData {
-  [key: string]: Tool[];
-}
+import aiTools from "../../public/ai-tools.json";
+import type { TTool } from "../types";
 
 const FormComponentStepOne = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const toolsData: ToolsData = {
-    text: [
-      {
-        name: "ChatGPT",
-        description:
-          "Advanced language model for conversation, writing, and problem-solving",
-        tags: ["Chatbot", "Writing", "AI Assistant"],
-      },
-      {
-        name: "Claude",
-        description: "Anthropic's AI assistant for writing and analysis",
-        tags: ["Writing", "Analysis", "AI Assistant"],
-      },
-    ],
-    coding: [
-      {
-        name: "GitHub Copilot",
-        description: "AI-powered code completion and suggestion tool",
-        tags: ["Coding", "Development", "AI Assistant"],
-      },
-      {
-        name: "Amazon CodeWhisperer",
-        description: "AI code companion for developers",
-        tags: ["Coding", "AWS", "AI Assistant"],
-      },
-    ],
-    image: [
-      {
-        name: "DALL-E",
-        description: "AI system that creates images from text descriptions",
-        tags: ["Image Generation", "AI Art", "Creative"],
-      },
-      {
-        name: "Midjourney",
-        description: "AI art generator with stunning visual capabilities",
-        tags: ["AI Art", "Creative", "Visual Design"],
-      },
-    ],
-  };
+  const categorizedTools = (aiTools as TTool[]).reduce(
+    (acc: { [key: string]: TTool[] }, tool) => {
+      // Convert tags to lowercase for consistent matching
+      tool.tags.forEach((tag) => {
+        const lowerTag = tag.toLowerCase();
+        // Check if tag matches our categories
+        if (
+          (lowerTag.includes("writing") && selectedCategory === "text") ||
+          (lowerTag.includes("coding") && selectedCategory === "coding") ||
+          (lowerTag.includes("image") && selectedCategory === "image")
+        ) {
+          if (!acc[selectedCategory]) {
+            acc[selectedCategory] = [];
+          }
+          if (!acc[selectedCategory].find((t) => t.name === tool.name)) {
+            acc[selectedCategory].push(tool);
+          }
+        }
+      });
+      return acc;
+    },
+    {}
+  );
+
+  const categories = ["text", "coding", "image"];
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
@@ -63,18 +41,28 @@ const FormComponentStepOne = () => {
       setCurrentStep(2);
     } else if (currentStep === 2) {
       console.log("Form completed!");
+      window.location.href = "/suggestions";
     }
   };
 
   const renderTools = () => {
-    return toolsData[selectedCategory]?.map((tool, index) => (
+    return categorizedTools[selectedCategory]?.map((tool, index) => (
       <div
         key={index}
         className="p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 cursor-pointer"
       >
-        <h3 className="text-xl font-bold mb-2">{tool.name}</h3>
+        <div className="flex items-center gap-4 mb-2">
+          {tool.icon && (
+            <img
+              src={tool.icon}
+              alt={`${tool.name} icon`}
+              className="w-8 h-8"
+            />
+          )}
+          <h3 className="text-xl font-bold">{tool.name}</h3>
+        </div>
         <p className="text-gray-600 mb-3">{tool.description}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-4">
           {tool.tags.map((tag, tagIndex) => (
             <span
               key={tagIndex}
@@ -84,6 +72,14 @@ const FormComponentStepOne = () => {
             </span>
           ))}
         </div>
+        <a
+          href={tool.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+        >
+          Visit Tool
+        </a>
       </div>
     ));
   };
@@ -94,7 +90,7 @@ const FormComponentStepOne = () => {
         <div className="flex flex-col items-center gap-8">
           <h2 className="text-2xl font-bold">Step 1: Choose Category</h2>
           <div className="flex gap-4">
-            {["text", "coding", "image"].map((category) => (
+            {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategorySelect(category)}
@@ -113,9 +109,9 @@ const FormComponentStepOne = () => {
       )}
 
       {currentStep === 2 && (
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col items-center gap-8 w-full max-w-6xl">
           <h2 className="text-2xl font-bold">Step 2: Select Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             {renderTools()}
           </div>
         </div>
