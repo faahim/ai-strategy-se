@@ -97,31 +97,36 @@ import aiTools from '../../public/ai-tools.json';
     </div>
   </aside>
   
-    <main class="w-3/4  px-5 md:px-10">
-      <div class="text-left font-medium text-2xl mb-5">
-        <h1>Suggestions!</h1>
-        <p>Welcome to AI tools' suggestions page</p>
+    <main class="w-3/4 px-5 md:px-10">
+      <div class="text-left mb-8">
+        <h1 class="text-2xl font-semibold mb-2">Community data sources</h1>
+        <p class="text-gray-600">Data sources let you connect community platforms to Ahoy. You may need admin access to connect data sources.</p>
       </div>
-    
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {
           aiTools.map((tool) => (
-            <div class="p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 cursor-pointer">
-              <div>
-                {/* Placeholder for future image assets */}
-                {tool.icon && <img src={tool.icon} alt={`${tool.name} icon`} />}
+            <div class="p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10  hover:outline hover:outline-indigo-200  transition-all cursor-pointer group">
+              <div class="flex items-center gap-3 mb-3">
+                {tool.icon && (
+                  <img 
+                    src={tool.icon} 
+                    alt={`${tool.name} icon`} 
+                    class="w-8 h-8"
+                  />
+                )}
+                <h2 class="text-[15px] font-medium text-gray-900">{tool.name}</h2>
               </div>
-              <h2 class="text-lg font-semibold">{tool.name}</h2>
-              <p class="text-sm text-gray-600 py-2">{tool.description}</p>
-              <div class="flex flex-wrap gap-2 pb-2">
-                {tool.tags?.map((tag) => (
-                  <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">{tag} </span>
-                ))}
-              </div>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
-              <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                Visit Tool
-              </a>
+              
+              <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                {tool.description}
+              </p>
+
+              <button 
+                class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md"
+              >
+                <span class="material-icons text-[18px]">link</span>
+                Connect
               </button>
             </div>
           ))
