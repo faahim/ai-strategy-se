@@ -49,9 +49,9 @@ const FormComponentStepOne = () => {
     return categorizedTools[selectedCategory]?.map((tool, index) => (
       <div
         key={index}
-        className="p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 cursor-pointer"
+        className="p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 hover:outline hover:outline-indigo-200 cursor-pointer group"
       >
-        <div className="flex items-center gap-4 mb-2">
+        <div className="flex items-center gap-3 mb-3">
           {tool.icon && (
             <img
               src={tool.icon}
@@ -59,27 +59,15 @@ const FormComponentStepOne = () => {
               className="w-8 h-8"
             />
           )}
-          <h3 className="text-xl font-bold">{tool.name}</h3>
+          <h2 className="text-[15px] font-medium text-gray-900">{tool.name}</h2>
         </div>
-        <p className="text-gray-600 mb-3">{tool.description}</p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {tool.tags.map((tag, tagIndex) => (
-            <span
-              key={tagIndex}
-              className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-        >
-          Visit Tool
-        </a>
+        <p className="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+          {tool.description}
+        </p>
+        <button className="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
+          <span className="material-icons text-[18px]">link</span>
+          Connect
+        </button>
       </div>
     ));
   };
