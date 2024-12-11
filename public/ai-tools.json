@@ -1968,18 +1968,6 @@
     "api_availability": false
   },
   {
-    "id": 170,
-    "name": "KREA",
-    "url": "https://www.krea.ai/",
-    "logo_url": "https://www.krea.ai/favicon.ico",
-    "description": "Explore millions of AI-generated images and create collections of prompts. Featuring Stable Diffusion generations.",
-    "category": "image-libraries",
-    "tags": ["AI", "Image Generation", "Stable Diffusion"],
-    "provider": "KREA",
-    "pricing_model": "Free/Paid",
-    "api_availability": false
-  },
-  {
     "id": 171,
     "name": "OpenArt",
     "url": "https://openart.ai/",
@@ -3196,6 +3184,42 @@
     "category": "sales",
     "tags": ["AI", "Sales", "Lead Tracking", "Website Visitors"],
     "provider": "Leadfeeder",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 274,
+    "name": "ActiveCampaign",
+    "url": "https://www.activecampaign.com/",
+    "logo_url": "https://www.activecampaign.com/favicon.ico",
+    "description": "AI-powered platform that automates email campaigns and audience segmentation.",
+    "category": "marketing",
+    "tags": ["AI", "Email Marketing", "Automation", "Audience Segmentation"],
+    "provider": "ActiveCampaign",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 275,
+    "name": "Mailchimp",
+    "url": "https://mailchimp.com/",
+    "logo_url": "https://mailchimp.com/favicon.ico",
+    "description": "Marketing automation platform offering AI-driven insights for email marketing optimization.",
+    "category": "marketing",
+    "tags": ["AI", "Email Marketing", "Automation", "Insights"],
+    "provider": "Mailchimp",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 276,
+    "name": "Chatfuel",
+    "url": "https://chatfuel.com/",
+    "logo_url": "https://chatfuel.com/favicon.ico",
+    "description": "Automates customer engagement on Facebook Messenger with AI-driven chatbots.",
+    "category": "marketing",
+    "tags": ["AI", "Chatbots", "Facebook Messenger", "Automation"],
+    "provider": "Chatfuel",
     "pricing_model": "Paid",
     "api_availability": false
   }
