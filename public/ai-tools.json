@@ -1678,18 +1678,7 @@
     "pricing_model": "Free/Paid",
     "api_availability": false
   },
-  {
-    "id": 139,
-    "name": "GauGAN2",
-    "url": "http://gaugan.org/gaugan2/",
-    "logo_url": "http://gaugan.org/favicon.ico",
-    "description": "GauGAN2 is a robust tool for creating photorealistic art using a combination of words and drawings since it integrates segmentation mapping, inpainting, and text-to-image production in a single model.",
-    "category": "services",
-    "tags": ["AI", "Image Generation", "Art Creation"],
-    "provider": "NVIDIA",
-    "pricing_model": "Free",
-    "api_availability": false
-  },
+
   {
     "id": 140,
     "name": "Magic Eraser",
@@ -1799,30 +1788,6 @@
     "api_availability": false
   },
   {
-    "id": 149,
-    "name": "PhotoRoom",
-    "url": "https://www.photoroom.com/",
-    "logo_url": "https://www.photoroom.com/favicon.ico",
-    "description": "Create product and portrait pictures using only your phone. Remove background, change background and showcase products.",
-    "category": "services",
-    "tags": ["AI", "Image Editing", "Background Removal"],
-    "provider": "PhotoRoom",
-    "pricing_model": "Free/Paid",
-    "api_availability": false
-  },
-  {
-    "id": 150,
-    "name": "Avatar AI",
-    "url": "https://avatarai.me/",
-    "logo_url": "https://avatarai.me/favicon.ico",
-    "description": "Create your own AI-generated avatars.",
-    "category": "services",
-    "tags": ["AI", "Avatar Generation", "Personalization"],
-    "provider": "Avatar AI",
-    "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
     "id": 151,
     "name": "ClipDrop",
     "url": "https://clipdrop.co/",
@@ -1835,18 +1800,6 @@
     "api_availability": true
   },
   {
-    "id": 152,
-    "name": "Lensa",
-    "url": "https://prisma-ai.com/lensa",
-    "logo_url": "https://prisma-ai.com/favicon.ico",
-    "description": "An all-in-one image editing app that includes the generation of personalized avatars using Stable Diffusion.",
-    "category": "services",
-    "tags": ["AI", "Image Editing", "Avatar Generation"],
-    "provider": "Prisma AI",
-    "pricing_model": "Free/Paid",
-    "api_availability": false
-  },
-  {
     "id": 153,
     "name": "RunDiffusion",
     "url": "https://rundiffusion.com/",
@@ -1855,18 +1808,6 @@
     "category": "services",
     "tags": ["AI", "Image Generation", "Art Creation"],
     "provider": "RunDiffusion",
-    "pricing_model": "Free/Paid",
-    "api_availability": true
-  },
-  {
-    "id": 154,
-    "name": "Human Generator",
-    "url": "https://generated.photos/human-generator",
-    "logo_url": "https://generated.photos/favicon.ico",
-    "description": "AI generator or realistic looking photos of humans.",
-    "category": "services",
-    "tags": ["AI", "Image Generation", "Human Photos"],
-    "provider": "Generated Photos",
     "pricing_model": "Free/Paid",
     "api_availability": true
   },
@@ -2135,18 +2076,6 @@
     "api_availability": false
   },
   {
-    "id": 177,
-    "name": "Stableboost",
-    "url": "https://stableboost.ai/",
-    "logo_url": "https://stableboost.ai/favicon.ico",
-    "description": "Stableboost is a Stable Diffusion WebUI that lets you quickly generate a lot of images so you can find the perfect ones.",
-    "category": "stable-Diffusion-resources",
-    "tags": ["AI", "Stable Diffusion", "Image Generation"],
-    "provider": "Stableboost",
-    "pricing_model": "Free",
-    "api_availability": false
-  },
-  {
     "id": 178,
     "name": "Hugging Face Diffusion Models Course",
     "url": "https://github.com/huggingface/diffusion-models-class",
@@ -2204,18 +2133,6 @@
     "tags": ["AI", "Text to Video", "Virtual Presenter"],
     "provider": "Hour One",
     "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
-    "id": 183,
-    "name": "D-ID",
-    "url": "https://www.d-id.com/",
-    "logo_url": "https://www.d-id.com/favicon.ico",
-    "description": "Create and interact with talking avatars at the touch of a button.",
-    "category": "video",
-    "tags": ["AI", "Talking Avatars", "Video Creation"],
-    "provider": "D-ID",
-    "pricing_model": "Free/Paid",
     "api_availability": false
   },
   {
@@ -2449,179 +2366,7 @@
     "pricing_model": "Paid",
     "api_availability": true
   },
-  {
-    "id": 202,
-    "name": "Seventh Sense",
-    "url": "https://www.theseventhsense.com/",
-    "logo_url": "https://www.theseventhsense.com/favicon.ico",
-    "description": "AI tool for email send time optimization.",
-    "category": "marketing",
-    "tags": ["Email Optimization", "AI", "Send Time"],
-    "provider": "Seventh Sense",
-    "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
-    "id": 203,
-    "name": "Smartly.io",
-    "url": "https://www.smartly.io/",
-    "logo_url": "https://www.smartly.io/favicon.ico",
-    "description": "Automates social media ad creation and optimization.",
-    "category": "marketing",
-    "tags": ["Social Media", "Ad Creation", "Optimization", "AI"],
-    "provider": "Smartly.io",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 204,
-    "name": "Adzooma",
-    "url": "https://www.adzooma.com/",
-    "logo_url": "https://www.adzooma.com/favicon.ico",
-    "description": "AI-powered PPC campaign management platform.",
-    "category": "marketing",
-    "tags": ["PPC", "Campaign Management", "AI"],
-    "provider": "Adzooma",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 205,
-    "name": "Phrasee",
-    "url": "https://www.phrasee.co/",
-    "logo_url": "https://www.phrasee.co/favicon.ico",
-    "description": "AI tool that generates optimized marketing copy.",
-    "category": "marketing",
-    "tags": ["Marketing Copy", "Optimization", "AI"],
-    "provider": "Phrasee",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 206,
-    "name": "Crimson Hexagon",
-    "url": "https://www.crimsonhexagon.com/",
-    "logo_url": "https://www.crimsonhexagon.com/favicon.ico",
-    "description": "AI-based social media sentiment analysis platform.",
-    "category": "marketing",
-    "tags": ["Social Media", "Sentiment Analysis", "AI"],
-    "provider": "Crimson Hexagon",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 207,
-    "name": "MarketMuse",
-    "url": "https://www.marketmuse.com/",
-    "logo_url": "https://www.marketmuse.com/favicon.ico",
-    "description": "SEO content optimization platform using AI.",
-    "category": "marketing",
-    "tags": ["SEO", "Content Optimization", "AI"],
-    "provider": "MarketMuse",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 208,
-    "name": "Chatfuel",
-    "url": "https://www.chatfuel.com/",
-    "logo_url": "https://www.chatfuel.com/favicon.ico",
-    "description": "AI-driven chatbot for automating customer engagement on Messenger.",
-    "category": "marketing",
-    "tags": ["Chatbot", "Customer Engagement", "Messenger", "AI"],
-    "provider": "Chatfuel",
-    "pricing_model": "Free/Paid",
-    "api_availability": true
-  },
-  {
-    "id": 209,
-    "name": "LogicBalls",
-    "url": "https://logicballs.com/",
-    "logo_url": "https://logicballs.com/favicon.ico",
-    "description": "An AI-powered writing tool to create any type of content and supercharge your productivity.",
-    "category": "marketing",
-    "tags": ["Writing Tool", "Content Creation", "AI", "Productivity"],
-    "provider": "LogicBalls",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 210,
-    "name": "Rupert AI",
-    "url": "https://www.getrupert.com/",
-    "logo_url": "https://www.getrupert.com/favicon.ico",
-    "description": "AI tools for designers and marketers.",
-    "category": "marketing",
-    "tags": ["Design", "Marketing", "AI"],
-    "provider": "Rupert AI",
-    "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
-    "id": 211,
-    "name": "PersonaForce",
-    "url": "https://personaforce.ai/",
-    "logo_url": "https://personaforce.ai/favicon.ico",
-    "description": "Create and chat with AI buyer personas for smarter marketing.",
-    "category": "marketing",
-    "tags": ["Buyer Personas", "Chatbot", "AI", "Marketing"],
-    "provider": "PersonaForce",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 212,
-    "name": "AICaller.io",
-    "url": "https://aicaller.io/?ref=v",
-    "logo_url": "https://aicaller.io/favicon.ico",
-    "description": "Automated bulk calling solution that uses Generative AI technology to trigger phone calls for lead qualification and data gathering.",
-    "category": "phone-calls",
-    "tags": [
-      "Automated Calling",
-      "Lead Qualification",
-      "Data Gathering",
-      "Generative AI"
-    ],
-    "provider": "AICaller",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 213,
-    "name": "Cald.ai",
-    "url": "https://cald.ai",
-    "logo_url": "https://cald.ai/favicon.ico",
-    "description": "AI-based calling agents for outbound and inbound phone calls.",
-    "category": "phone-calls",
-    "tags": ["AI", "Phone Calls", "Outbound", "Inbound"],
-    "provider": "Cald.ai",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
-  {
-    "id": 214,
-    "name": "Rosie",
-    "url": "https://heyrosie.com/",
-    "logo_url": "https://heyrosie.com/favicon.ico",
-    "description": "AI phone answering service.",
-    "category": "phone-calls",
-    "tags": ["Phone Answering", "AI"],
-    "provider": "Rosie",
-    "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
-    "id": 215,
-    "name": "Eleven Labs",
-    "url": "https://beta.elevenlabs.io/",
-    "logo_url": "https://beta.elevenlabs.io/favicon.ico",
-    "description": "AI voice generator.",
-    "category": "speech",
-    "tags": ["Voice Generator", "AI", "Speech Synthesis"],
-    "provider": "Eleven Labs",
-    "pricing_model": "Paid",
-    "api_availability": true
-  },
+
   {
     "id": 216,
     "name": "Resemble AI",

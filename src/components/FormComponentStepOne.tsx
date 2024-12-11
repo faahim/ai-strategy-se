@@ -52,13 +52,13 @@ const FormComponentStepOne = () => {
         className="p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 hover:outline hover:outline-indigo-200 cursor-pointer group"
       >
         <div className="flex items-center gap-3 mb-3">
-          {tool.logo_url && (
-            <img
-              src={tool.logo_url}
-              alt={`${tool.name} icon`}
-              className="w-8 h-8"
-            />
-          )}
+          {/*  {tool.logo_url && (
+                  <img
+                    src={tool.logo_url}
+                    alt={`${tool.name} icon`}
+                    class="w-8 h-8"
+                  />
+                )} */}
           <h2 className="text-[15px] font-medium text-gray-900">{tool.name}</h2>
         </div>
         <p className="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
