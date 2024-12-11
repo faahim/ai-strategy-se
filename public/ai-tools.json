@@ -3150,5 +3150,53 @@
     "provider": "Harbor",
     "pricing_model": "Free",
     "api_availability": true
+  },
+  {
+    "id": 270,
+    "name": "Jacquard",
+    "url": "https://www.jacquard.com/",
+    "logo_url": "https://aitools.ai/favicon.ico",
+    "description": "AI-powered platform for generating optimized marketing messages, including email and social media copy.",
+    "category": "marketing",
+    "tags": ["AI", "Marketing", "Email", "Social Media"],
+    "provider": "Jacquard",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 271,
+    "name": "Writesonic",
+    "url": "https://writesonic.com/",
+    "logo_url": "https://writesonic.com/favicon.ico",
+    "description": "AI writing assistant for marketing content, blogs, and sales copy generation.",
+    "category": "marketing",
+    "tags": ["AI", "Content Creation", "Marketing", "Sales", "SEO"],
+    "provider": "Writesonic",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 272,
+    "name": "HubSpot AI",
+    "url": "https://www.hubspot.com/ai",
+    "logo_url": "https://www.hubspot.com/favicon.ico",
+    "description": "AI-driven CRM platform with marketing automation for nurturing leads.",
+    "category": "marketing",
+    "tags": ["AI", "CRM", "Marketing Automation", "Lead Nurturing"],
+    "provider": "HubSpot",
+    "pricing_model": "Paid",
+    "api_availability": false
+  },
+  {
+    "id": 273,
+    "name": "Leadfeeder",
+    "url": "https://www.leadfeeder.com/",
+    "logo_url": "https://www.leadfeeder.com/favicon.ico",
+    "description": "AI-based tool for tracking website visitors and identifying sales leads.",
+    "category": "sales",
+    "tags": ["AI", "Sales", "Lead Tracking", "Website Visitors"],
+    "provider": "Leadfeeder",
+    "pricing_model": "Paid",
+    "api_availability": false
   }
 ]
