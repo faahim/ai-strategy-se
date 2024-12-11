@@ -132,7 +132,10 @@ import CategoriesComponent from './CategoriesComponent.astro';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {
           aiTools.map((tool) => (
-            <div class="p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10  hover:outline hover:outline-indigo-200  cursor-pointer group">
+            <div class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
+                        hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
+                        hover:outline hover:outline-indigo-200 cursor-pointer group"
+                 data-category={tool.category}>
               <div class="flex items-center gap-3 mb-3">
                 {/* {tool.icon && (
                   <img
