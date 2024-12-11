@@ -108,18 +108,6 @@
     "api_availability": "Unknown"
   },
   {
-    "id": 10,
-    "name": "Kazimir.ai",
-    "url": "https://kazimir.ai/",
-    "logo_url": "https://kazimir.ai/favicon.ico",
-    "description": "Search engine for AI-generated images",
-    "category": "search_engine",
-    "tags": ["AI", "image search", "generative AI"],
-    "provider": "Kazimir AI",
-    "pricing_model": "Free/Premium",
-    "api_availability": true
-  },
-  {
     "id": 11,
     "name": "Perplexity AI",
     "url": "https://www.perplexity.ai/",
@@ -1908,18 +1896,6 @@
     "api_availability": false
   },
   {
-    "id": 163,
-    "name": "Pawtrait",
-    "url": "https://www.pawtrait.art/",
-    "logo_url": "https://www.pawtrait.art/favicon.ico",
-    "description": "AI Pet Portraits.",
-    "category": "services",
-    "tags": ["AI", "Pet Portraits", "Image Generation"],
-    "provider": "Pawtrait",
-    "pricing_model": "Free/Paid",
-    "api_availability": false
-  },
-  {
     "id": 164,
     "name": "iColoring",
     "url": "https://icoloring.ai",
@@ -3160,18 +3136,6 @@
     "category": "education",
     "tags": ["AI", "Exam Generator", "Education", "Learning"],
     "provider": "Exam Samurai",
-    "pricing_model": "Paid",
-    "api_availability": false
-  },
-  {
-    "id": 268,
-    "name": "AI Watermark Remover",
-    "url": "https://aiwatermarkremover.io/",
-    "logo_url": "https://aiwatermarkremover.io/favicon.ico",
-    "description": "Remove watermarks from images and videos.",
-    "category": "media",
-    "tags": ["AI", "Watermark Removal", "Image Editing", "Video Editing"],
-    "provider": "AI Watermark Remover",
     "pricing_model": "Paid",
     "api_availability": false
   },
