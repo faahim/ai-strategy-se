@@ -1,0 +1,125 @@
+---
+const sortOptions = [
+  { value: 'name', label: 'Name (A-Z)' },
+  { value: 'name-desc', label: 'Name (Z-A)' },
+  { value: 'category', label: 'Category' },
+  { value: 'popular', label: 'Most Popular' }
+];
+---
+
+<div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg border border-gray-200">
+  <!-- Search -->
+  <div class="relative w-full sm:w-96">
+    <div class="relative flex items-center">
+      <input
+        type="text" 
+        id="toolSearch"
+        placeholder="Search tools..."
+        class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+      />
+      <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+      <button 
+        id="clearSearch"
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden"
+        title="Clear search">
+        <span class="material-icons text-sm">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sort -->
+  <div class="flex items-center gap-2 w-full sm:w-auto">
+    <span class="material-icons text-gray-500">sort</span>
+    <select 
+      id="toolSort"
+      class="border border-gray-300 rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    >
+      {sortOptions.map(option => (
+        <option value={option.value}>{option.label}</option>
+      ))}
+    </select>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('toolSearch') as HTMLInputElement;
+  const sortSelect = document.getElementById('toolSort') as HTMLSelectElement;
+  const clearSearchBtn = document.getElementById('clearSearch');
+  let searchTimeout: number;
+
+  // Debounced search function
+  const handleSearch = () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const tools = document.querySelectorAll('.tool-card');
+      
+      tools.forEach(tool => {
+        const name = tool.querySelector('h2')?.textContent?.toLowerCase() || '';
+        const description = tool.querySelector('p')?.textContent?.toLowerCase() || '';
+        const matches = name.includes(searchTerm) || description.includes(searchTerm);
+        
+        if (matches) {
+          (tool as HTMLElement).style.display = 'block';
+          (tool as HTMLElement).style.opacity = '1';
+        } else {
+          (tool as HTMLElement).style.opacity = '0';
+          setTimeout(() => {
+            (tool as HTMLElement).style.display = 'none';
+          }, 300);
+        }
+      });
+    }, 300);
+  };
+
+  // Show/hide clear button based on search input
+  searchInput?.addEventListener('input', () => {
+    if (searchInput.value) {
+      clearSearchBtn?.classList.remove('hidden');
+    } else {
+      clearSearchBtn?.classList.add('hidden');
+    }
+    handleSearch();
+  });
+
+  // Clear search functionality
+  clearSearchBtn?.addEventListener('click', () => {
+    searchInput.value = '';
+    clearSearchBtn.classList.add('hidden');
+    handleSearch();
+  });
+
+  // Sort functionality
+  const handleSort = () => {
+    const tools = Array.from(document.querySelectorAll('.tool-card')) as HTMLElement[];
+    const sortValue = sortSelect.value;
+
+    tools.sort((a, b) => {
+      const nameA = a.querySelector('h2')?.textContent || '';
+      const nameB = b.querySelector('h2')?.textContent || '';
+      const categoryA = a.getAttribute('data-category') || '';
+      const categoryB = b.getAttribute('data-category') || '';
+
+      switch (sortValue) {
+        case 'name':
+          return nameA.localeCompare(nameB);
+        case 'name-desc':
+          return nameB.localeCompare(nameA);
+        case 'category':
+          return categoryA.localeCompare(categoryB);
+        case 'popular':
+          return 0;
+        default:
+          return 0;
+      }
+    });
+
+    tools.forEach((tool, index) => {
+      tool.style.order = index.toString();
+    });
+  };
+
+  // Event listeners
+  searchInput?.addEventListener('input', handleSearch);
+  sortSelect?.addEventListener('change', handleSort);
+</script>

@@ -1,14 +1,16 @@
 ---
-import aiTools from '../../public/ai-tools.json';
+import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
 import CategoriesComponent from './CategoriesComponent.astro';
+import TagsComponent from './TagsComponent.astro';
+import ToolbarComponent from './ToolbarComponent.astro';
+import EmptyStateComponent from './EmptyStateComponent.astro';
 ---
 
 <div>
   <div class="flex h-screen max-w-full mx-auto">
     <aside class="w-1/4 flex fixed left-0 top-0">
       <!-- Primary Sidebar -->
-      <div
-        class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
+      <div class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
         <!-- Logo Section -->
         <div class="p-4 border-b border-gray-800 mx-auto">
           <div
@@ -123,44 +125,100 @@ import CategoriesComponent from './CategoriesComponent.astro';
           admin access to connect data sources.
         </p>
         <p class="font-normal text-gray-600 mt-5">
-          RECOMMENDED <span class="material-icons mr-2 text-sm text-yellow-500">
-            star
-          </span>
+          RECOMMENDED <span class="material-icons text-sm text-yellow-500">star</span>
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {
-          aiTools.map((tool) => (
-            <div class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
-                        hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
-                        hover:outline hover:outline-indigo-200 cursor-pointer group"
-                 data-category={tool.category}>
-              <div class="flex items-center gap-3 mb-3">
-               {/*  {tool.logo_url && (
-                  <img
-                    src={tool.logo_url}
-                    alt={`${tool.name} icon`}
-                    class="w-8 h-8"
-                  />
-                )} */}
-                <h2 class="text-[15px] font-medium text-gray-900">
-                  {tool.name}
-                </h2>
+      <!-- Search and filter section -->
+      <div>
+        <TagsComponent />
+        <ToolbarComponent />
+      </div>
+
+      <!-- Results section with empty state -->
+      <div class="relative min-h-[200px]">
+        <!-- Tools grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="toolsGrid">
+          {
+            aiTools.map((tool) => (
+              <div 
+                class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
+                       hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
+                       hover:outline hover:outline-indigo-200 cursor-pointer group transition-all duration-300"
+                data-category={tool.category}
+                data-tags={tool.tags.join(',')}
+              >
+                <div class="flex items-center gap-3 mb-3">
+                  <h2 class="text-[15px] font-medium text-gray-900">
+                    {tool.name}
+                  </h2>
+                </div>
+
+                <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                  {tool.description}
+                </p>
+
+                <button class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
+                  <span class="material-icons text-[18px]">link</span>
+                  Connect
+                </button>
               </div>
-
-              <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
-                {tool.description}
-              </p>
-
-              <button class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
-                <span class="material-icons text-[18px]">link</span>
-                Connect
-              </button>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
+        
+        <!-- Empty state -->
+        <div id="searchEmptyState" class="hidden absolute inset-0">
+          <EmptyStateComponent />
+        </div>
       </div>
     </main>
   </div>
 </div>
+
+<script>
+  const searchInput = document.querySelector('input[type="search"]');
+  const toolsGrid = document.getElementById('toolsGrid')!;
+  const searchEmptyState = document.getElementById('searchEmptyState')!;
+  const toolCards = document.querySelectorAll('.tool-card');
+
+  function updateSearchResults() {
+    const visibleTools = Array.from(toolCards).filter(card => {
+      const htmlCard = card as HTMLElement;
+      return !htmlCard.style.display || htmlCard.style.display !== 'none';
+    });
+    
+    if (visibleTools.length === 0) {
+      toolsGrid.classList.add('hidden');
+      searchEmptyState.classList.remove('hidden');
+    } else {
+      toolsGrid.classList.remove('hidden');
+      searchEmptyState.classList.add('hidden');
+    }
+  }
+
+  // Listen for input changes
+  searchInput?.addEventListener('input', updateSearchResults);
+
+  // Listen for changes to tool card visibility
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+        updateSearchResults();
+      }
+    });
+  });
+
+  toolCards.forEach(card => {
+    observer.observe(card, { attributes: true });
+  });
+
+  // Initial check
+  updateSearchResults();
+</script>
+
+<style>
+  .tool-card {
+    transition: all 300ms ease-in-out;
+  }
+</style>

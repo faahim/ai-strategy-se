@@ -1,0 +1,225 @@
+---
+import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
+// Flatten the tags array and remove duplicates
+const tags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
+const initialTagCount = 6;
+
+// Count tools per tag and create sorted array
+const tagCounts = tags.reduce(
+  (acc, tag) => {
+    acc[tag] = aiTools.filter((tool) => tool.tags.includes(tag)).length;
+    return acc;
+  },
+  {} as Record<string, number>
+);
+
+// Sort tags by count (descending)
+const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
+---
+
+<div class="flex flex-wrap gap-2 mb-6 items-center">
+  <div class="flex flex-wrap gap-2 items-center">
+    {
+      sortedTags.slice(0, initialTagCount).map((tag) => (
+        <button
+          class="tag-button px-3 py-1.5 text-sm text-slate-700 bg-gradient-to-r from-slate-50 to-slate-100 
+                 border border-slate-200 shadow-sm rounded-full 
+                 hover:from-blue-100 hover:to-sky-100 hover:text-blue-700 hover:border-blue-300 
+                 transition-all duration-300 capitalize flex items-center gap-1 group"
+          data-tag={tag}>
+          {tag}
+          <span class="bg-white/80 backdrop-blur-sm px-1.5 rounded-full text-xs text-slate-600 
+                       group-hover:bg-blue-200/80 group-hover:text-blue-700">
+            {tagCounts[tag]}
+          </span>
+        </button>
+      ))
+    }
+    {
+      tags.length > initialTagCount && (
+        <button
+          id="showMoreTags"
+          class="px-3 py-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors flex items-center gap-1">
+          More
+          <span class="material-icons text-sm">expand_more</span>
+        </button>
+      )
+    }
+    <button
+      id="clearFilters"
+      class="px-3 py-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors flex items-center gap-1 ml-2 hidden">
+      Clear filters
+      <span class="material-icons text-sm">close</span>
+    </button>
+  </div>
+
+  <div id="remainingTags" class="hidden flex-wrap gap-2">
+    {
+      tags.slice(initialTagCount).map((tag) => (
+        <button
+          class="tag-button px-3 py-1.5 text-sm text-slate-700 bg-gradient-to-r from-slate-50 to-slate-100 
+                 border border-slate-200 shadow-sm rounded-full 
+                 hover:from-blue-100 hover:to-sky-100 hover:text-blue-700 hover:border-blue-300 
+                 transition-all duration-300 capitalize flex items-center gap-1 group"
+          data-tag={tag}>
+          {tag}
+          <span class="bg-white/80 backdrop-blur-sm px-1.5 rounded-full text-xs text-slate-600 
+                       group-hover:bg-blue-200/80 group-hover:text-blue-700">
+            {tagCounts[tag]}
+          </span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const showMoreBtn = document.getElementById('showMoreTags');
+  const remainingTags = document.getElementById('remainingTags');
+  const tagButtons = document.querySelectorAll('.tag-button');
+  const clearFiltersBtn = document.getElementById('clearFilters');
+  const emptyState = document.getElementById('emptyState');
+  const selectedTags = new Set();
+
+  // Function to filter tools based on selected tags
+  const filterTools = () => {
+    const tools = document.querySelectorAll('.tool-card');
+    let visibleTools = 0;
+
+    tools.forEach((tool) => {
+      const toolTags = (tool.getAttribute('data-tags') || '').split(',');
+      const toolCategory = tool.getAttribute('data-category');
+      const htmlTool = tool as HTMLElement;
+
+      // If no tags are selected, show all tools
+      if (selectedTags.size === 0) {
+        htmlTool.style.display = '';
+        htmlTool.style.opacity = '1';
+        visibleTools++;
+        return;
+      }
+
+      // Check if tool has any of the selected tags
+      const hasSelectedTag = Array.from(selectedTags).some((tag) =>
+        toolTags.includes(tag as string)
+      );
+
+      if (hasSelectedTag) {
+        htmlTool.style.display = '';
+        htmlTool.style.opacity = '1';
+        visibleTools++;
+      } else {
+        htmlTool.style.display = 'none';
+        htmlTool.style.opacity = '0';
+      }
+    });
+
+    // Toggle empty state
+    if (visibleTools === 0) {
+      emptyState?.classList.remove('hidden');
+    } else {
+      emptyState?.classList.add('hidden');
+    }
+
+    // Toggle clear filters button
+    if (selectedTags.size > 0) {
+      clearFiltersBtn?.classList.remove('hidden');
+    } else {
+      clearFiltersBtn?.classList.add('hidden');
+    }
+  };
+
+  // Clear all filters
+  clearFiltersBtn?.addEventListener('click', () => {
+    selectedTags.clear();
+    tagButtons.forEach((button) => {
+      button.classList.remove(
+        'bg-blue-200', 'text-slate-900', 
+        'border-blue-300', 'shadow-md',
+        'from-blue-100', 'to-sky-100'
+      );
+      button.classList.add(
+        'from-slate-50', 'to-slate-100',
+        'text-slate-700', 'border-slate-200',
+        'shadow-sm'
+      );
+      // Update the count badge
+      const badge = button.querySelector('span');
+      if (badge) {
+        badge.classList.remove('bg-blue-300/90', 'text-slate-900');
+        badge.classList.add('bg-white/80', 'text-slate-600');
+      }
+    });
+    
+    // Reset all tools to visible
+    document.querySelectorAll('.tool-card').forEach((tool) => {
+      const htmlTool = tool as HTMLElement;
+      htmlTool.style.display = '';
+      htmlTool.style.opacity = '1';
+    });
+    
+    filterTools();
+  });
+
+  // Add click handlers to tag buttons
+  tagButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const tag = button.getAttribute('data-tag');
+      if (!tag) return;
+
+      const badge = button.querySelector('span');
+
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        button.classList.remove(
+          'bg-blue-200', 'text-slate-900', 
+          'border-blue-300', 'shadow-md',
+          'from-blue-100', 'to-sky-100'
+        );
+        button.classList.add(
+          'from-slate-50', 'to-slate-100',
+          'text-slate-700', 'border-slate-200',
+          'shadow-sm'
+        );
+        if (badge) {
+          badge.classList.remove('bg-blue-300/90', 'text-slate-900');
+          badge.classList.add('bg-white/80', 'text-slate-600');
+        }
+      } else {
+        selectedTags.add(tag);
+        button.classList.remove(
+          'from-slate-50', 'to-slate-100',
+          'text-slate-700', 'border-slate-200',
+          'shadow-sm'
+        );
+        button.classList.add(
+          'bg-blue-200', 'text-slate-900', 
+          'border-blue-300', 'shadow-md'
+        );
+        if (badge) {
+          badge.classList.remove('bg-white/80', 'text-slate-600');
+          badge.classList.add('bg-blue-300/90', 'text-slate-900');
+        }
+      }
+
+      filterTools();
+    });
+  });
+
+  // More/Less button functionality
+  showMoreBtn?.addEventListener('click', () => {
+    remainingTags?.classList.toggle('hidden');
+    remainingTags?.classList.toggle('flex');
+
+    const icon = showMoreBtn.querySelector('.material-icons');
+    const text = showMoreBtn.childNodes[0];
+
+    if (remainingTags?.classList.contains('hidden')) {
+      text.textContent = 'More ';
+      icon!.textContent = 'expand_more';
+    } else {
+      text.textContent = 'Less ';
+      icon!.textContent = 'expand_less';
+    }
+  });
+</script>
