@@ -41,7 +41,7 @@ const FormComponentStepOne = () => {
       setCurrentStep(2);
     } else if (currentStep === 2) {
       console.log("Form completed!");
-      window.location.href = "/suggestions";
+      window.location.href = "/filter";
     }
   };
 
