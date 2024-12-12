@@ -10,13 +10,21 @@ const sortOptions = [
 <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg border border-gray-200">
   <!-- Search -->
   <div class="relative w-full sm:w-96">
-    <input 
-      type="text" 
-      id="toolSearch"
-      placeholder="Search tools..."
-      class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-    />
-    <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+    <div class="relative flex items-center">
+      <input 
+        type="text" 
+        id="toolSearch"
+        placeholder="Search tools..."
+        class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+      />
+      <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+      <button 
+        id="clearSearch" 
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden"
+        title="Clear search">
+        <span class="material-icons text-sm">close</span>
+      </button>
+    </div>
   </div>
 
   <!-- Sort -->
@@ -37,6 +45,9 @@ const sortOptions = [
   const searchInput = document.getElementById('toolSearch') as HTMLInputElement;
   const sortSelect = document.getElementById('toolSort') as HTMLSelectElement;
   let searchTimeout: number;
+
+  // Add clear search button reference
+  const clearSearchBtn = document.getElementById('clearSearch');
 
   // Debounced search function
   const handleSearch = () => {
@@ -71,6 +82,24 @@ const sortOptions = [
       }
     }, 300);
   };
+
+  // Show/hide clear button based on search input
+  searchInput?.addEventListener('input', () => {
+    if (searchInput.value) {
+      clearSearchBtn?.classList.remove('hidden');
+    } else {
+      clearSearchBtn?.classList.add('hidden');
+    }
+    handleSearch();
+  });
+
+  // Clear search functionality
+  clearSearchBtn?.addEventListener('click', () => {
+    searchInput.value = '';
+    clearSearchBtn.classList.add('hidden');
+    handleSearch();
+    savePreferences();
+  });
 
   // Sort function
   const handleSort = () => {
