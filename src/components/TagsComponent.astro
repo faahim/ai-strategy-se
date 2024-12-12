@@ -2,53 +2,173 @@
 import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
 // Flatten the tags array and remove duplicates
 const tags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
-const initialTagCount = 6; // Show first 6 tags initially
+const initialTagCount = 6;
+
+// Count tools per tag
+const tagCounts = tags.reduce((acc, tag) => {
+  acc[tag] = aiTools.filter(tool => tool.tags.includes(tag)).length;
+  return acc;
+}, {} as Record<string, number>);
 ---
 
 <div class="flex flex-wrap gap-2 mb-6 items-center">
-  {
-    tags
-      .slice(0, initialTagCount)
-      .map((tag) => (
-        <button class="px-3 py-1.5 text-sm text-gray-600 bg-indigo-200 border border-indigo-400 rounded-full hover:bg-indigo-200 transition-colors capitalize">
-          {tag}
+  <div class="flex flex-wrap gap-2 items-center">
+    {
+      tags
+        .slice(0, initialTagCount)
+        .map((tag) => (
+          <button 
+            class="tag-button px-3 py-1.5 text-sm text-gray-600 bg-indigo-200 border border-indigo-400 
+                   rounded-full hover:bg-indigo-300 transition-colors capitalize flex items-center gap-1 group"
+            data-tag={tag}>
+            {tag}
+            <span class="bg-indigo-300 px-1.5 rounded-full text-xs group-hover:bg-indigo-400">
+              {tagCounts[tag]}
+            </span>
+          </button>
+        ))
+    }
+    {
+      tags.length > initialTagCount && (
+        <button
+          id="showMoreTags"
+          class="px-3 py-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors flex items-center gap-1">
+          More
+          <span class="material-icons text-sm">expand_more</span>
         </button>
-      ))
-  }
-  {
-    tags.length > initialTagCount && (
-      <button
-        id="showMoreTags"
-        class="px-3 py-1.5 text-sm text-indigo-600 hover:text-indigo-700  font-medium transition-colors flex items-center gap-1">
-        More
-        <span class="material-icons text-sm">expand_more</span>
-      </button>
-    )
-  }
+      )
+    }
+    <button
+      id="clearFilters"
+      class="px-3 py-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors flex items-center gap-1 ml-2 hidden">
+      Clear filters
+      <span class="material-icons text-sm">close</span>
+    </button>
+  </div>
+
   <div id="remainingTags" class="hidden flex-wrap gap-2">
     {
       tags
         .slice(initialTagCount)
         .map((tag) => (
-          <button class="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-full bg-indigo-200 border border-indigo-400  hover:bg-gray-200 transition-colors capitalize">
+          <button 
+            class="tag-button px-3 py-1.5 text-sm text-gray-600 bg-indigo-200 border border-indigo-400 
+                   rounded-full hover:bg-indigo-300 transition-colors capitalize flex items-center gap-1 group"
+            data-tag={tag}>
             {tag}
+            <span class="bg-indigo-300 px-1.5 rounded-full text-xs group-hover:bg-indigo-400">
+              {tagCounts[tag]}
+            </span>
           </button>
         ))
     }
+  </div>
+
+  <!-- Empty state message -->
+  <div id="emptyState" class="hidden w-full text-center py-8">
+    <div class="max-w-sm mx-auto">
+      <span class="material-icons text-4xl text-gray-400 mb-2">search_off</span>
+      <h3 class="text-lg font-medium text-gray-900 mb-1">No matching tools found</h3>
+      <p class="text-sm text-gray-600">Try adjusting your filters or clearing them to see more results.</p>
+    </div>
   </div>
 </div>
 
 <script>
   const showMoreBtn = document.getElementById('showMoreTags');
   const remainingTags = document.getElementById('remainingTags');
+  const tagButtons = document.querySelectorAll('.tag-button');
+  const clearFiltersBtn = document.getElementById('clearFilters');
+  const emptyState = document.getElementById('emptyState');
+  const selectedTags = new Set();
 
+  // Function to filter tools based on selected tags
+  const filterTools = () => {
+    const tools = document.querySelectorAll('.tool-card');
+    let visibleTools = 0;
+    
+    tools.forEach(tool => {
+      const toolTags = (tool.getAttribute('data-tags') || '').split(',');
+      const toolCategory = tool.getAttribute('data-category');
+      
+      // If no tags are selected, show all tools
+      if (selectedTags.size === 0) {
+        (tool as HTMLElement).style.display = 'block';
+        visibleTools++;
+        return;
+      }
+
+      // Check if tool has any of the selected tags
+      const hasSelectedTag = Array.from(selectedTags).some(tag => 
+        toolTags.includes(tag as string)
+      );
+      
+      if (hasSelectedTag) {
+        (tool as HTMLElement).style.display = 'block';
+        (tool as HTMLElement).style.opacity = '1';
+        visibleTools++;
+      } else {
+        (tool as HTMLElement).style.opacity = '0';
+        setTimeout(() => {
+          (tool as HTMLElement).style.display = 'none';
+        }, 300);
+      }
+    });
+
+    // Toggle empty state
+    if (visibleTools === 0) {
+      emptyState?.classList.remove('hidden');
+    } else {
+      emptyState?.classList.add('hidden');
+    }
+
+    // Toggle clear filters button
+    if (selectedTags.size > 0) {
+      clearFiltersBtn?.classList.remove('hidden');
+    } else {
+      clearFiltersBtn?.classList.add('hidden');
+    }
+  };
+
+  // Clear all filters
+  clearFiltersBtn?.addEventListener('click', () => {
+    selectedTags.clear();
+    tagButtons.forEach(button => {
+      button.classList.remove('bg-indigo-400', 'text-white');
+      button.classList.add('bg-indigo-200', 'text-gray-600');
+    });
+    filterTools();
+  });
+
+  // Add click handlers to tag buttons
+  tagButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tag = button.getAttribute('data-tag');
+      if (!tag) return;
+
+      // Toggle tag selection
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        button.classList.remove('bg-indigo-400', 'text-white');
+        button.classList.add('bg-indigo-200', 'text-gray-600');
+      } else {
+        selectedTags.add(tag);
+        button.classList.remove('bg-indigo-200', 'text-gray-600');
+        button.classList.add('bg-indigo-400', 'text-white');
+      }
+
+      filterTools();
+    });
+  });
+
+  // More/Less button functionality
   showMoreBtn?.addEventListener('click', () => {
     remainingTags?.classList.toggle('hidden');
     remainingTags?.classList.toggle('flex');
-
+    
     const icon = showMoreBtn.querySelector('.material-icons');
     const text = showMoreBtn.childNodes[0];
-
+    
     if (remainingTags?.classList.contains('hidden')) {
       text.textContent = 'More ';
       icon!.textContent = 'expand_more';

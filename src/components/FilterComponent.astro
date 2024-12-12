@@ -138,8 +138,9 @@ import TagsComponent from './TagsComponent.astro';
           aiTools.map((tool) => (
             <div class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
                         hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
-                        hover:outline hover:outline-indigo-200 cursor-pointer group"
-                 data-category={tool.category}>
+                        hover:outline hover:outline-indigo-200 cursor-pointer group transition-all duration-300"
+                 data-category={tool.category}
+                 data-tags={tool.tags.join(',')}>
               <div class="flex items-center gap-3 mb-3">
                {/*  {tool.logo_url && (
                   <img
@@ -168,3 +169,9 @@ import TagsComponent from './TagsComponent.astro';
     </main>
   </div>
 </div>
+
+<style>
+  .tool-card {
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  }
+</style>
