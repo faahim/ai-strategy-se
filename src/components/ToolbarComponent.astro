@@ -1,0 +1,141 @@
+---
+const sortOptions = [
+  { value: 'name', label: 'Name (A-Z)' },
+  { value: 'name-desc', label: 'Name (Z-A)' },
+  { value: 'category', label: 'Category' },
+  { value: 'popular', label: 'Most Popular' }
+];
+---
+
+<div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg border border-gray-200">
+  <!-- Search -->
+  <div class="relative w-full sm:w-96">
+    <input 
+      type="text" 
+      id="toolSearch"
+      placeholder="Search tools..."
+      class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    />
+    <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+  </div>
+
+  <!-- Sort -->
+  <div class="flex items-center gap-2 w-full sm:w-auto">
+    <span class="material-icons text-gray-500">sort</span>
+    <select 
+      id="toolSort"
+      class="border border-gray-300 rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    >
+      {sortOptions.map(option => (
+        <option value={option.value}>{option.label}</option>
+      ))}
+    </select>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('toolSearch') as HTMLInputElement;
+  const sortSelect = document.getElementById('toolSort') as HTMLSelectElement;
+  let searchTimeout: number;
+
+  // Debounced search function
+  const handleSearch = () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const tools = document.querySelectorAll('.tool-card');
+      
+      tools.forEach(tool => {
+        const name = tool.querySelector('h2')?.textContent?.toLowerCase() || '';
+        const description = tool.querySelector('p')?.textContent?.toLowerCase() || '';
+        const matches = name.includes(searchTerm) || description.includes(searchTerm);
+        
+        if (matches) {
+          (tool as HTMLElement).style.display = 'block';
+          (tool as HTMLElement).style.opacity = '1';
+        } else {
+          (tool as HTMLElement).style.opacity = '0';
+          setTimeout(() => {
+            (tool as HTMLElement).style.display = 'none';
+          }, 300);
+        }
+      });
+
+      // Update empty state
+      const emptyState = document.getElementById('emptyState');
+      const visibleTools = document.querySelectorAll('.tool-card[style*="display: block"]');
+      if (visibleTools.length === 0) {
+        emptyState?.classList.remove('hidden');
+      } else {
+        emptyState?.classList.add('hidden');
+      }
+    }, 300);
+  };
+
+  // Sort function
+  const handleSort = () => {
+    const tools = Array.from(document.querySelectorAll('.tool-card')) as HTMLElement[];
+    const container = tools[0].parentElement;
+    const sortValue = sortSelect.value;
+
+    tools.sort((a, b) => {
+      const nameA = a.querySelector('h2')?.textContent || '';
+      const nameB = b.querySelector('h2')?.textContent || '';
+      const categoryA = a.getAttribute('data-category') || '';
+      const categoryB = b.getAttribute('data-category') || '';
+
+      switch (sortValue) {
+        case 'name':
+          return nameA.localeCompare(nameB);
+        case 'name-desc':
+          return nameB.localeCompare(nameA);
+        case 'category':
+          return categoryA.localeCompare(categoryB);
+        case 'popular':
+          // You can implement custom popularity logic here
+          return 0;
+        default:
+          return 0;
+      }
+    });
+
+    // Animate reordering
+    tools.forEach((tool, index) => {
+      tool.style.order = index.toString();
+      tool.classList.add('transition-all', 'duration-300');
+    });
+  };
+
+  // Event listeners
+  searchInput?.addEventListener('input', handleSearch);
+  sortSelect?.addEventListener('change', handleSort);
+
+  // Save preferences to localStorage
+  const savePreferences = () => {
+    const preferences = {
+      sort: sortSelect.value,
+      search: searchInput.value,
+    };
+    localStorage.setItem('toolPreferences', JSON.stringify(preferences));
+  };
+
+  // Load preferences from localStorage
+  const loadPreferences = () => {
+    const preferences = JSON.parse(localStorage.getItem('toolPreferences') || '{}');
+    if (preferences.sort) {
+      sortSelect.value = preferences.sort;
+      handleSort();
+    }
+    if (preferences.search) {
+      searchInput.value = preferences.search;
+      handleSearch();
+    }
+  };
+
+  // Save preferences when changed
+  searchInput?.addEventListener('change', savePreferences);
+  sortSelect?.addEventListener('change', savePreferences);
+
+  // Load preferences on page load
+  document.addEventListener('DOMContentLoaded', loadPreferences);
+</script>

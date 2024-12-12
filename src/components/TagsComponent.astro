@@ -4,17 +4,20 @@ import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
 const tags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
 const initialTagCount = 6;
 
-// Count tools per tag
+// Count tools per tag and create sorted array
 const tagCounts = tags.reduce((acc, tag) => {
   acc[tag] = aiTools.filter(tool => tool.tags.includes(tag)).length;
   return acc;
 }, {} as Record<string, number>);
+
+// Sort tags by count (descending)
+const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
 ---
 
 <div class="flex flex-wrap gap-2 mb-6 items-center">
   <div class="flex flex-wrap gap-2 items-center">
     {
-      tags
+      sortedTags
         .slice(0, initialTagCount)
         .map((tag) => (
           <button 
