@@ -15,6 +15,22 @@ const tagCounts = tags.reduce(
 
 // Sort tags by count (descending)
 const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
+
+// Function to randomly assign size classes
+function getRandomSize() {
+  const sizes = [
+    'text-sm', // default/small
+    'text-base font-medium', // medium
+    'text-lg font-semibold', // large
+  ];
+  return sizes[Math.floor(Math.random() * sizes.length)];
+}
+
+// Assign random sizes to tags
+const tagSizes = sortedTags.reduce((acc, tag) => {
+  acc[tag] = getRandomSize();
+  return acc;
+}, {} as Record<string, string>);
 ---
 
 <div class="flex flex-col gap-4 mb-6">
@@ -24,15 +40,16 @@ const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
       {
         sortedTags.slice(0, initialTagCount).map((tag) => (
           <button
-            class="tag-button px-3 py-1.5 text-sm text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
+            class={`tag-button px-3 py-1.5 ${tagSizes[tag]} text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
                    border border-indigo-300 shadow-sm rounded-full 
                    hover:from-indigo-200 hover:to-indigo-300 hover:text-indigo-800 hover:border-indigo-400 
-                   transition-all duration-300 capitalize flex items-center gap-1 group"
+                   transition-all duration-300 capitalize flex items-center gap-1 group`}
             data-tag={tag}>
             {tag}
             <span
-              class="bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full text-xs text-indigo-700 
-                         group-hover:bg-indigo-500/20 group-hover:text-indigo-800">
+              class={`bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full ${
+                tagSizes[tag].includes('text-lg') ? 'text-sm' : 'text-xs'
+              } text-indigo-700 group-hover:bg-indigo-500/20 group-hover:text-indigo-800`}>
               {tagCounts[tag]}
             </span>
           </button>
@@ -63,15 +80,16 @@ const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
         {
           tags.slice(initialTagCount).map((tag) => (
             <button
-              class="tag-button px-3 py-1.5 text-sm text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
+              class={`tag-button px-3 py-1.5 ${tagSizes[tag]} text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
                      border border-indigo-300 shadow-sm rounded-full 
                      hover:from-indigo-200 hover:to-indigo-300 hover:text-indigo-800 hover:border-indigo-400 
-                     transition-all duration-300 capitalize flex items-center gap-1 group"
+                     transition-all duration-300 capitalize flex items-center gap-1 group`}
               data-tag={tag}>
               {tag}
               <span
-                class="bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full text-xs text-indigo-700 
-                           group-hover:bg-indigo-500/20 group-hover:text-indigo-800">
+                class={`bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full ${
+                  tagSizes[tag].includes('text-lg') ? 'text-sm' : 'text-xs'
+                } text-indigo-700 group-hover:bg-indigo-500/20 group-hover:text-indigo-800`}>
                 {tagCounts[tag]}
               </span>
             </button>
