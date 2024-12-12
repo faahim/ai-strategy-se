@@ -2,37 +2,43 @@
 import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
 
 // Get popular tags (top 5)
-const tags = aiTools.flatMap(tool => tool.tags);
-const tagCounts = tags.reduce((acc, tag) => {
-  acc[tag] = (acc[tag] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
+const tags = aiTools.flatMap((tool) => tool.tags);
+const tagCounts = tags.reduce(
+  (acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>
+);
 
 const popularTags = Object.entries(tagCounts)
-  .sort(([,a], [,b]) => b - a)
+  .sort(([, a], [, b]) => b - a)
   .slice(0, 5)
   .map(([tag]) => tag);
 ---
 
 <div class="flex flex-col items-center justify-center py-12 px-4">
-  <div class="text-center">
+  <div class="text-center -mt-8">
     <span class="material-icons text-gray-400 text-5xl mb-4">search_off</span>
     <h3 class="text-lg font-medium text-gray-900 mb-2">No results found</h3>
-    <p class="text-gray-500 max-w-sm mb-6">
-      We couldn't find anything matching your search. Try adjusting your filters or search terms.
+    <p class="text-gray-500 max-w-sm text-center mx-auto mb-6">
+      We couldn't find anything matching your search. Try adjusting your filters
+      or search terms.
     </p>
-    
+
     <div class="flex flex-col items-center">
-      <p class="text-sm text-gray-600 mb-3">Popular searches:</p>
+      <p class="text-sm text-gray-600 mb-4">Popular searches:</p>
       <div class="flex flex-wrap gap-2 justify-center">
-        {popularTags.map(tag => (
-          <button
-            class="suggestion-tag px-3 py-1.5 text-sm text-gray-600 bg-gray-100 
-                   hover:bg-gray-200 rounded-full transition-colors capitalize"
-            data-suggestion={tag}>
-            {tag}
-          </button>
-        ))}
+        {
+          popularTags.map((tag) => (
+            <button
+              class="suggestion-tag px-5 py-2 text-sm text-gray-700 bg-gray-300  border border-gray-500 
+                   hover:bg-gray-100 hover:border-gray-600 hover:text-gray-950 rounded-full transition-colors capitalize"
+              data-suggestion={tag}>
+              {tag}
+            </button>
+          ))
+        }
       </div>
     </div>
   </div>
@@ -40,17 +46,19 @@ const popularTags = Object.entries(tagCounts)
 
 <script>
   const suggestionTags = document.querySelectorAll('.suggestion-tag');
-  
-  suggestionTags.forEach(tag => {
+
+  suggestionTags.forEach((tag) => {
     tag.addEventListener('click', () => {
       const suggestion = tag.getAttribute('data-suggestion');
-      const searchInput = document.getElementById('toolSearch') as HTMLInputElement;
+      const searchInput = document.getElementById(
+        'toolSearch'
+      ) as HTMLInputElement;
       const clearFiltersBtn = document.getElementById('clearSearch');
-      
+
       if (searchInput && suggestion) {
         // First clear existing filters
         clearFiltersBtn?.click();
-        
+
         // Small delay to ensure filters are cleared
         setTimeout(() => {
           // Then set new search value and trigger search
