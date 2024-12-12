@@ -11,7 +11,7 @@ const sortOptions = [
   <!-- Search -->
   <div class="relative w-full sm:w-96">
     <div class="relative flex items-center">
-      <input 
+      <input
         type="text" 
         id="toolSearch"
         placeholder="Search tools..."
@@ -19,7 +19,7 @@ const sortOptions = [
       />
       <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
       <button 
-        id="clearSearch" 
+        id="clearSearch"
         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden"
         title="Clear search">
         <span class="material-icons text-sm">close</span>
@@ -44,10 +44,8 @@ const sortOptions = [
 <script>
   const searchInput = document.getElementById('toolSearch') as HTMLInputElement;
   const sortSelect = document.getElementById('toolSort') as HTMLSelectElement;
-  let searchTimeout: number;
-
-  // Add clear search button reference
   const clearSearchBtn = document.getElementById('clearSearch');
+  let searchTimeout: number;
 
   // Debounced search function
   const handleSearch = () => {
@@ -71,15 +69,6 @@ const sortOptions = [
           }, 300);
         }
       });
-
-      // Update empty state
-      const emptyState = document.getElementById('emptyState');
-      const visibleTools = document.querySelectorAll('.tool-card[style*="display: block"]');
-      if (visibleTools.length === 0) {
-        emptyState?.classList.remove('hidden');
-      } else {
-        emptyState?.classList.add('hidden');
-      }
     }, 300);
   };
 
@@ -98,13 +87,11 @@ const sortOptions = [
     searchInput.value = '';
     clearSearchBtn.classList.add('hidden');
     handleSearch();
-    savePreferences();
   });
 
-  // Sort function
+  // Sort functionality
   const handleSort = () => {
     const tools = Array.from(document.querySelectorAll('.tool-card')) as HTMLElement[];
-    const container = tools[0].parentElement;
     const sortValue = sortSelect.value;
 
     tools.sort((a, b) => {
@@ -121,50 +108,18 @@ const sortOptions = [
         case 'category':
           return categoryA.localeCompare(categoryB);
         case 'popular':
-          // You can implement custom popularity logic here
           return 0;
         default:
           return 0;
       }
     });
 
-    // Animate reordering
     tools.forEach((tool, index) => {
       tool.style.order = index.toString();
-      tool.classList.add('transition-all', 'duration-300');
     });
   };
 
   // Event listeners
   searchInput?.addEventListener('input', handleSearch);
   sortSelect?.addEventListener('change', handleSort);
-
-  // Save preferences to localStorage
-  const savePreferences = () => {
-    const preferences = {
-      sort: sortSelect.value,
-      search: searchInput.value,
-    };
-    localStorage.setItem('toolPreferences', JSON.stringify(preferences));
-  };
-
-  // Load preferences from localStorage
-  const loadPreferences = () => {
-    const preferences = JSON.parse(localStorage.getItem('toolPreferences') || '{}');
-    if (preferences.sort) {
-      sortSelect.value = preferences.sort;
-      handleSort();
-    }
-    if (preferences.search) {
-      searchInput.value = preferences.search;
-      handleSearch();
-    }
-  };
-
-  // Save preferences when changed
-  searchInput?.addEventListener('change', savePreferences);
-  sortSelect?.addEventListener('change', savePreferences);
-
-  // Load preferences on page load
-  document.addEventListener('DOMContentLoaded', loadPreferences);
 </script>
