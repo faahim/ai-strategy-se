@@ -1,5 +1,5 @@
 import { useState } from "react";
-import aiTools from "../../public/ai-tools.json";
+import aiTools from "../assets/data/ai-tools.json";
 import type { TTool } from "../types";
 
 const FormComponentStepOne = () => {

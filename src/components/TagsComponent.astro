@@ -1,5 +1,5 @@
 ---
-import aiTools from '../../public/ai-tools.json' assert { type: 'json' };
+import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
 // Flatten the tags array and remove duplicates
 const tags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
 const initialTagCount = 10;
