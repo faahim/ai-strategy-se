@@ -975,12 +975,12 @@
     "name": "Otter.ai",
     "url": "https://otter.ai",
     "logo_url": "https://otter.ai/favicon.ico",
-    "description": "A meeting assistant that records audio, writes notes, automatically captures slides, and generates summaries.",
-    "category": "meeting-assistants",
-    "tags": ["meeting", "audio", "notes", "summaries"],
+    "description": "Real-time AI meeting notes and transcription for in-person and virtual meetings.",
+    "category": "productivity",
+    "tags": ["Meeting Notes", "Transcription", "Real-time", "Collaboration"],
     "provider": "Otter.ai",
-    "pricing_model": "Free/Paid",
-    "api_availability": false
+    "pricing_model": "Free/Premium",
+    "api_availability": true
   },
   {
     "id": 82,
@@ -3221,6 +3221,122 @@
     "tags": ["AI", "Chatbots", "Facebook Messenger", "Automation"],
     "provider": "Chatfuel",
     "pricing_model": "Paid",
+    "api_availability": false
+  },
+
+  {
+    "id": 277,
+    "name": "AIGardenPlanner",
+    "url": "https://aigardenplanner.com",
+    "logo_url": "https://aigardenplanner.com/favicon.ico",
+    "description": "AI-powered garden planning tool that provides personalized plant recommendations, care schedules, and layout designs based on your climate and space.",
+    "category": "lifestyle",
+    "tags": ["Gardening", "Plant Care", "Landscape Design", "Climate Analysis"],
+    "provider": "AIGardenPlanner",
+    "pricing_model": "Free/Premium",
+    "api_availability": false
+  },
+
+  {
+    "id": 282,
+    "name": "TravelPal AI",
+    "url": "https://travelpal.ai",
+    "logo_url": "https://travelpal.ai/favicon.ico",
+    "description": "AI travel assistant that creates personalized itineraries, predicts best times to book, and provides real-time translation and cultural insights.",
+    "category": "travel",
+    "tags": [
+      "Travel Planning",
+      "Translation",
+      "Cultural Guide",
+      "Booking Optimization"
+    ],
+    "provider": "TravelPal",
+    "pricing_model": "Usage-based",
+    "api_availability": true
+  },
+  {
+    "id": 286,
+    "name": "StudyBuddy AI",
+    "url": "https://studybuddy.ai",
+    "logo_url": "https://studybuddy.ai/favicon.ico",
+    "description": "Adaptive learning platform that creates personalized study materials and adjusts difficulty based on your learning style and progress.",
+    "category": "education",
+    "tags": [
+      "Adaptive Learning",
+      "Study Planning",
+      "Progress Tracking",
+      "Personalized Education"
+    ],
+    "provider": "StudyBuddy",
+    "pricing_model": "Subscription",
+    "api_availability": true
+  },
+
+  {
+    "id": 302,
+    "name": "Beautiful.ai",
+    "url": "https://www.beautiful.ai/",
+    "logo_url": "https://www.beautiful.ai/favicon.ico",
+    "description": "AI presentation software that automatically designs your slides and adapts them in real-time.",
+    "category": "productivity",
+    "tags": ["Presentations", "Design", "Slides", "AI Design"],
+    "provider": "Beautiful.ai",
+    "pricing_model": "Free/Premium",
+    "api_availability": false
+  },
+  {
+    "id": 303,
+    "name": "Grammarly Business",
+    "url": "https://www.grammarly.com/business",
+    "logo_url": "https://www.grammarly.com/favicon.ico",
+    "description": "AI writing assistant that helps teams write clear, error-free, and consistent content at work.",
+    "category": "writing-assistants",
+    "tags": ["Grammar", "Writing", "Business", "Communication"],
+    "provider": "Grammarly",
+    "pricing_model": "Paid",
+    "api_availability": true
+  },
+
+  {
+    "id": 306,
+    "name": "Descript",
+    "url": "https://www.descript.com/",
+    "logo_url": "https://www.descript.com/favicon.ico",
+    "description": "AI-powered video and audio editing platform that lets you edit media as easily as a text document.",
+    "category": "content-creation",
+    "tags": [
+      "Video Editing",
+      "Audio Editing",
+      "Content Creation",
+      "Transcription"
+    ],
+    "provider": "Descript",
+    "pricing_model": "Free/Premium",
+    "api_availability": true
+  },
+
+  {
+    "id": 308,
+    "name": "Krisp",
+    "url": "https://krisp.ai",
+    "logo_url": "https://krisp.ai/favicon.ico",
+    "description": "AI-powered noise cancellation app that removes background noise and echo from calls.",
+    "category": "audio",
+    "tags": ["Noise Cancellation", "Audio Enhancement", "Meetings", "Calls"],
+    "provider": "Krisp",
+    "pricing_model": "Free/Premium",
+    "api_availability": true
+  },
+  {
+    "id": 311,
+    "name": "Gondola",
+    "url": "https://www.gondola.ai/",
+    "logo_url": "https://www.gondola.ai/favicon.ico",
+    "description": "AI for frequent travelers. Book better hotels, earn more points, and travel for free",
+    "category": "travel",
+    "tags": ["Travel", "Hotels", "Points", "Travel for free"],
+    "provider": "Gondola",
+    "pricing_model": "Premium",
     "api_availability": false
   }
 ]
