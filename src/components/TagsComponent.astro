@@ -178,8 +178,13 @@ function getTagGroup(tag: string): string {
     const matchedResults = document.getElementById('matchedResults');
     const matchCount = document.getElementById('matchCount');
 
+    // Track visible tools per category
+    const visibleCategoryCounts: Record<string, number> = {};
+    const visibleGroupCounts: Record<string, number> = {};
+
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
+      const toolCategory = tool.getAttribute('data-category');
       const htmlTool = tool as HTMLElement;
 
       // If no tags are selected, show all tools
@@ -202,10 +207,32 @@ function getTagGroup(tag: string): string {
         htmlTool.style.opacity = '1';
         htmlTool.classList.add('filtered');
         visibleTools++;
+
+        // Count visible tools per category
+        if (toolCategory) {
+          visibleCategoryCounts[toolCategory] = (visibleCategoryCounts[toolCategory] || 0) + 1;
+        }
       } else {
         htmlTool.style.display = 'none';
         htmlTool.style.opacity = '0';
         htmlTool.classList.remove('filtered');
+      }
+    });
+
+    // Update category counts in sidebar
+    document.querySelectorAll('.category-group').forEach(button => {
+      const categories = button.getAttribute('data-categories')?.split(',');
+      const countSpan = button.querySelector('span:last-child');
+      if (categories && countSpan) {
+        if (categories.includes('all')) {
+          // Update "All Categories" count
+          countSpan.textContent = visibleTools.toString();
+        } else {
+          // Sum up counts for categories in this group
+          const groupCount = categories.reduce((sum, cat) => 
+            sum + (visibleCategoryCounts[cat] || 0), 0);
+          countSpan.textContent = groupCount.toString();
+        }
       }
     });
 
