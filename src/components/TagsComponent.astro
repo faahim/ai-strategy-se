@@ -1,119 +1,132 @@
 ---
 import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
-// Flatten the tags array and remove duplicates
-const tags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
-const initialTagCount = 10;
 
-// Count tools per tag and create sorted array
-const tagCounts = tags.reduce(
-  (acc, tag) => {
-    acc[tag] = aiTools.filter((tool) => tool.tags.includes(tag)).length;
-    return acc;
-  },
-  {} as Record<string, number>
-);
+// Define tag groups and their associated tags
+const tagGroups: Record<string, string[]> = {
+  "Development & Tools": [
+    "Developer Tools", "Code", "API", "Automation", "No Code/Low Code", 
+    "Open Source", "Testing", "Web Development", "Programming", "Assistant Code"
+  ],
+  "Content Creation": [
+    "Content Creation", "Writing", "Text Generators", "Content Generation",
+    "Copywriting", "Blogging", "Marketing Copy", "Creative Writing"
+  ],
+  "Business & Productivity": [
+    "Business", "Productivity", "Project Management", "Task Management",
+    "Team Collaboration", "Workflow Automation", "Enterprise"
+  ],
+  "AI & Machine Learning": [
+    "AI", "Machine Learning", "Large Language Models", "Neural Networks",
+    "LLM", "AI Agents", "ChatGPT", "Generative AI"
+  ],
+  "Design & Media": [
+    "Design", "Image Generation", "Video Creation", "Graphics",
+    "3D Model", "Art Creation", "Logo Design", "Visual Creation"
+  ],
+  "Education & Research": [
+    "Education", "Research & Science", "Academic Writing", "Learning",
+    "Studies", "Tutoring", "Course Creation"
+  ],
+  "Data & Analytics": [
+    "Data & Analytics", "Data Processing", "Analytics", "Business Intelligence",
+    "Data Science", "Data Visualization"
+  ],
+  "Communication & Social": [
+    "Communication", "Social Media", "Email", "Chat", "Messaging",
+    "Collaboration", "Community"
+  ]
+} as const;
 
-// Sort tags by count (descending)
-const sortedTags = tags.sort((a, b) => tagCounts[b] - tagCounts[a]);
+// Get all tags from tools
+const allTags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
 
-// Function to randomly assign size classes
-function getRandomSize() {
-  const sizes = [
-    'text-sm', // default/small
-    'text-base font-medium', // medium
-    'text-lg font-semibold', // large
-  ];
-  return sizes[Math.floor(Math.random() * sizes.length)];
+// Count tools per tag
+const tagCounts = allTags.reduce((acc, tag) => {
+  acc[tag] = aiTools.filter((tool) => tool.tags.includes(tag)).length;
+  return acc;
+}, {} as Record<string, number>);
+
+// Calculate total tools per group
+const groupCounts = Object.entries(tagGroups).reduce((acc, [group, tags]) => {
+  const uniqueToolsInGroup = new Set(
+    aiTools.filter(tool => 
+      tool.tags.some(tag => tags.includes(tag))
+    ).map(tool => tool.id)
+  );
+  acc[group] = uniqueToolsInGroup.size;
+  return acc;
+}, {} as Record<string, number>);
+
+// Function to get group for a tag
+function getTagGroup(tag: string): string {
+  for (const [group, tags] of Object.entries(tagGroups)) {
+    if (tags.includes(tag)) {
+      return group;
+    }
+  }
+  return "Other";
 }
-
-// Assign random sizes to tags
-const tagSizes = sortedTags.reduce(
-  (acc, tag) => {
-    acc[tag] = getRandomSize();
-    return acc;
-  },
-  {} as Record<string, string>
-);
 ---
 
 <div class="flex flex-col gap-4 mb-6">
-  <!-- Tag Buttons Section -->
-  <div class="flex flex-wrap gap-2 items-center">
-    <div class="flex flex-wrap gap-2 items-center">
-      {
-        sortedTags.slice(0, initialTagCount).map((tag) => (
-          <button
-            class={`tag-button px-3 py-1.5 ${tagSizes[tag]} text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
-                   border border-indigo-300 shadow-sm rounded-full 
-                   hover:from-indigo-200 hover:to-indigo-300 hover:text-indigo-800 hover:border-indigo-400 
-                   transition-all duration-300 capitalize flex items-center gap-1 group`}
-            data-tag={tag}>
-            {tag}
-            <span
-              class={`bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full ${
-                tagSizes[tag].includes('text-lg') ? 'text-sm' : 'text-xs'
-              } text-indigo-700 group-hover:bg-indigo-500/20 group-hover:text-indigo-800`}>
-              {tagCounts[tag]}
-            </span>
-          </button>
-        ))
-      }
-
-      {
-        tags.length > initialTagCount && (
-          <button
-            id="showMoreTags"
-            class="px-3 py-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors flex items-center gap-1">
-            More
-            <span class="material-icons text-sm">expand_more</span>
-          </button>
-        )
-      }
-
-      <div
-        id="selectedTagsContainer"
-        class="hidden flex-col gap-2 m-2 p-4 pr-6 pb-6 rounded border border-indigo-200">
-        <div class="text-slate-500 px-3 py-1.5">Selected tags:</div>
-        <div class="flex flex-wrap gap-3 pl-3" id="selectedTagsList">
-          {/* Selected tags will be populated dynamically */}
+  <!-- Tag Groups Section -->
+  <div class="flex flex-wrap gap-3">
+    {Object.entries(tagGroups).map(([group, groupTags]) => (
+      <div class="group-container">
+        <button
+          class="tag-group-button px-4 py-2 text-base font-medium text-indigo-700 
+                 bg-gradient-to-r from-indigo-150 to-indigo-250 
+                 border border-indigo-300 shadow-sm rounded-lg
+                 hover:from-indigo-200 hover:to-indigo-300 hover:text-indigo-800 
+                 transition-all duration-300 flex items-center gap-2"
+          data-group={group}
+        >
+          <span class="capitalize">{group}</span>
+          <span class="bg-indigo-400/20 px-2 py-0.5 rounded-full text-sm text-indigo-700">
+            {groupCounts[group]}
+          </span>
+        </button>
+        
+        <!-- Dropdown content -->
+        <div class="tag-dropdown hidden absolute z-10 mt-2 w-max bg-indigo-300/90 backdrop-blur-sm rounded-lg shadow-lg border border-indigo-400 py-3 px-4">
+          <div class="grid grid-cols-2 gap-2">
+            {groupTags.map(tag => (
+              allTags.includes(tag) && (
+                <button
+                  class="tag-button text-left px-3 py-1.5 text-md text-indigo-800 hover:bg-indigo-50 rounded-md flex items-center  justify-between group"
+                  data-tag={tag}
+                >
+                  <span class="capitalize">{tag}</span>
+                  <span class="text-xs 
+               mx-2 bg-indigo-100/70 rounded-full px-2 py-0.5 text-indigo-600 
+                  group-hover:bg-indigo-200/70 
+                  group-hover:text-indigo-500">
+                    {tagCounts[tag] || 0}
+                  </span>
+                </button>
+              )
+            ))}
+          </div>
         </div>
       </div>
+    ))}
+  </div>
 
-      <div id="remainingTags" class="hidden flex-wrap gap-2">
-        <hr class="w-full mt-2 mb-2 border-indigo-200" />
-        {
-          tags.slice(initialTagCount).map((tag) => (
-            <button
-              class={`tag-button px-3 py-1.5 ${tagSizes[tag]} text-indigo-700 bg-gradient-to-r from-indigo-150 to-indigo-250 
-                     border border-indigo-300 shadow-sm rounded-full 
-                     hover:from-indigo-200 hover:to-indigo-300 hover:text-indigo-800 hover:border-indigo-400 
-                     transition-all duration-300 capitalize flex items-center gap-1 group`}
-              data-tag={tag}>
-              {tag}
-              <span
-                class={`bg-indigo-400/20 backdrop-blur-sm px-1.5 rounded-full ${
-                  tagSizes[tag].includes('text-lg') ? 'text-sm' : 'text-xs'
-                } text-indigo-700 group-hover:bg-indigo-500/20 group-hover:text-indigo-800`}>
-                {tagCounts[tag]}
-              </span>
-            </button>
-          ))
-        }
-      </div>
-    </div>
+  <!-- Selected Tags Container -->
+  <div
+    id="selectedTagsContainer"
+    class="hidden flex-col gap-2 mt-4 p-4 rounded-lg border border-indigo-200"
+  >
+    <div class="text-slate-500 px-3 py-1.5">Selected tags:</div>
+    <div class="flex flex-wrap gap-3 pl-3" id="selectedTagsList"></div>
   </div>
 </div>
 
 <script>
-  const showMoreBtn = document.getElementById('showMoreTags');
-  const remainingTags = document.getElementById('remainingTags');
-  const tagButtons = document.querySelectorAll('.tag-button');
-  const clearFiltersBtn = document.getElementById('clearFilters');
+  const groupContainers = document.querySelectorAll('.group-container');
+  const selectedTags = new Set<string>();
+  const selectedTagsContainer = document.getElementById('selectedTagsContainer');
   const emptyState = document.getElementById('emptyState');
-  const selectedTags = new Set();
-  const selectedTagsContainer = document.getElementById(
-    'selectedTagsContainer'
-  );
 
   // Function to create a selected tag element
   const createSelectedTagElement = (tag: string) => {
@@ -146,46 +159,11 @@ const tagSizes = sortedTags.reduce(
         selectedTagsList.appendChild(tagEl);
       });
 
-      // Add clear filters button inline with tags
+      // Add clear filters button
       const clearBtn = document.createElement('button');
-      clearBtn.id = 'clearFilters';
-      clearBtn.className =
-        'px-3 py-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors flex items-center gap-1 capitalize bg-red-200/80 backdrop-blur-sm rounded-full border border-red-200 shadow-sm';
+      clearBtn.className = 'px-3 py-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors flex items-center gap-1 capitalize bg-red-200/80 backdrop-blur-sm rounded-full border border-red-200 shadow-sm';
       clearBtn.innerHTML = `Clear all filters <span class="material-icons text-sm">close</span>`;
-      clearBtn.addEventListener('click', () => {
-        // Call the clear function directly instead of triggering click
-        selectedTags.clear();
-        tagButtons.forEach((button) => {
-          button.classList.remove(
-            'bg-indigo-500',
-            'text-white',
-            'border-indigo-600',
-            'shadow-md',
-            'from-indigo-400',
-            'to-indigo-500'
-          );
-          button.classList.add(
-            'from-indigo-150',
-            'to-indigo-250',
-            'text-indigo-700',
-            'border-indigo-300',
-            'shadow-sm'
-          );
-          const badge = button.querySelector('span');
-          if (badge) {
-            badge.classList.remove('bg-white/20', 'text-white');
-            badge.classList.add('bg-indigo-400/20', 'text-indigo-700');
-          }
-        });
-
-        document.querySelectorAll('.tool-card').forEach((tool) => {
-          const htmlTool = tool as HTMLElement;
-          htmlTool.style.display = '';
-          htmlTool.style.opacity = '1';
-        });
-
-        filterTools();
-      });
+      clearBtn.addEventListener('click', clearFilters);
       selectedTagsList.appendChild(clearBtn);
     } else {
       selectedTagsContainer.classList.add('hidden');
@@ -200,7 +178,6 @@ const tagSizes = sortedTags.reduce(
 
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
-      const toolCategory = tool.getAttribute('data-category');
       const htmlTool = tool as HTMLElement;
 
       // If no tags are selected, show all tools
@@ -212,8 +189,8 @@ const tagSizes = sortedTags.reduce(
       }
 
       // Check if tool has any of the selected tags
-      const hasSelectedTag = Array.from(selectedTags).some((tag) =>
-        toolTags.includes(tag as string)
+      const hasSelectedTag = Array.from(selectedTags).some(
+        (tag) => toolTags.includes(tag as string)
       );
 
       if (hasSelectedTag) {
@@ -233,41 +210,16 @@ const tagSizes = sortedTags.reduce(
       emptyState?.classList.add('hidden');
     }
 
-    // Toggle clear filters button
-    if (selectedTags.size > 0) {
-      clearFiltersBtn?.classList.remove('hidden');
-    } else {
-      clearFiltersBtn?.classList.add('hidden');
-    }
-
     updateSelectedTagsDisplay();
   };
 
-  // Clear all filters
-  clearFiltersBtn?.addEventListener('click', () => {
+  // Function to clear all filters
+  const clearFilters = () => {
     selectedTags.clear();
-    tagButtons.forEach((button) => {
-      button.classList.remove(
-        'bg-indigo-500',
-        'text-white',
-        'border-indigo-600',
-        'shadow-md',
-        'from-indigo-400',
-        'to-indigo-500'
-      );
-      button.classList.add(
-        'from-indigo-150',
-        'to-indigo-250',
-        'text-indigo-700',
-        'border-indigo-300',
-        'shadow-sm'
-      );
-      // Update the count badge
-      const badge = button.querySelector('span');
-      if (badge) {
-        badge.classList.remove('bg-white/20', 'text-white');
-        badge.classList.add('bg-indigo-400/20', 'text-indigo-700');
-      }
+    
+    // Reset all tag buttons
+    document.querySelectorAll('.tag-button').forEach((button) => {
+      button.classList.remove('bg-indigo-100');
     });
 
     // Reset all tools to visible
@@ -279,80 +231,48 @@ const tagSizes = sortedTags.reduce(
 
     filterTools();
     updateSelectedTagsDisplay();
-  });
+  };
 
-  // Add click handlers to tag buttons
-  tagButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const tag = button.getAttribute('data-tag');
-      if (!tag) return;
+  // Handle dropdown visibility
+  groupContainers.forEach(container => {
+    const button = container.querySelector('.tag-group-button');
+    const dropdown = container.querySelector('.tag-dropdown');
 
-      const badge = button.querySelector('span');
-
-      if (selectedTags.has(tag)) {
-        selectedTags.delete(tag);
-        button.classList.remove(
-          'bg-indigo-500',
-          'text-white',
-          'border-indigo-600',
-          'shadow-md',
-          'from-indigo-400',
-          'to-indigo-500'
-        );
-        button.classList.add(
-          'from-indigo-150',
-          'to-indigo-250',
-          'text-indigo-700',
-          'border-indigo-300',
-          'shadow-sm'
-        );
-        if (badge) {
-          badge.classList.remove('bg-white/20', 'text-white');
-          badge.classList.add('bg-indigo-400/20', 'text-indigo-700');
-        }
-      } else {
-        selectedTags.add(tag);
-        button.classList.remove(
-          'from-indigo-150',
-          'to-indigo-250',
-          'text-indigo-700',
-          'border-indigo-300',
-          'shadow-sm'
-        );
-        button.classList.add(
-          'bg-indigo-500',
-          'text-white',
-          'border-indigo-600',
-          'shadow-md',
-          'from-indigo-400',
-          'to-indigo-500'
-        );
-        if (badge) {
-          badge.classList.remove('bg-indigo-400/20', 'text-indigo-700');
-          badge.classList.add('bg-white/20', 'text-white');
-        }
-      }
-
-      filterTools();
-      updateSelectedTagsDisplay();
+    button?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown?.classList.toggle('hidden');
+      
+      // Close other dropdowns
+      document.querySelectorAll('.tag-dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.add('hidden');
+      });
     });
   });
 
-  // More/Less button functionality
-  showMoreBtn?.addEventListener('click', () => {
-    remainingTags?.classList.toggle('hidden');
-    remainingTags?.classList.toggle('flex');
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.tag-dropdown').forEach(dropdown => {
+      dropdown.classList.add('hidden');
+    });
+  });
 
-    const icon = showMoreBtn.querySelector('.material-icons');
-    const text = showMoreBtn.childNodes[0];
+  // Add click handlers to tag buttons
+  document.querySelectorAll('.tag-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tag = button.getAttribute('data-tag');
+      if (!tag) return;
 
-    if (remainingTags?.classList.contains('hidden')) {
-      text.textContent = 'More ';
-      icon!.textContent = 'expand_more';
-    } else {
-      text.textContent = 'Less ';
-      icon!.textContent = 'expand_less';
-    }
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        button.classList.remove('bg-indigo-100');
+      } else {
+        selectedTags.add(tag);
+        button.classList.add('bg-indigo-100');
+      }
+
+      filterTools();
+    });
   });
 
   // Add click handler for remove buttons in selected tags
@@ -364,11 +284,21 @@ const tagSizes = sortedTags.reduce(
     const tag = removeButton.getAttribute('data-tag');
     if (!tag) return;
 
-    // Cast to HTMLButtonElement to access click()
-    tagButtons.forEach((button) => {
+    // Find and trigger click on corresponding tag button
+    document.querySelectorAll('.tag-button').forEach((button) => {
       if (button.getAttribute('data-tag') === tag) {
         (button as HTMLButtonElement).click();
       }
     });
   });
 </script>
+
+<style>
+  .group-container {
+    position: relative;
+  }
+
+  .tag-dropdown {
+    min-width: 300px;
+  }
+</style>
