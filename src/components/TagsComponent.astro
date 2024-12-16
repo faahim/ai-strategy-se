@@ -176,13 +176,22 @@ function getTagGroup(tag: string): string {
     const tools = document.querySelectorAll('.tool-card');
     let visibleTools = 0;
 
+    // Hide all tools first
+    tools.forEach(tool => {
+      const htmlTool = tool as HTMLElement;
+      htmlTool.style.display = 'none';
+      htmlTool.style.opacity = '0';
+    });
+
+    // Show only tools that match selected tags
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
       const htmlTool = tool as HTMLElement;
+      const categorySection = htmlTool.closest('[data-category-group]');
 
       // If no tags are selected, show all tools
       if (selectedTags.size === 0) {
-        htmlTool.style.display = '';
+        htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
         visibleTools++;
         return;
@@ -194,13 +203,16 @@ function getTagGroup(tag: string): string {
       );
 
       if (hasSelectedTag) {
-        htmlTool.style.display = '';
+        htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
         visibleTools++;
-      } else {
-        htmlTool.style.display = 'none';
-        htmlTool.style.opacity = '0';
       }
+    });
+
+    // Show/hide category sections based on visible tools
+    document.querySelectorAll('[data-category-group]').forEach(section => {
+      const hasVisibleTools = section.querySelector('.tool-card[style*="display: block"]');
+      (section as HTMLElement).style.display = hasVisibleTools ? 'block' : 'none';
     });
 
     // Toggle empty state

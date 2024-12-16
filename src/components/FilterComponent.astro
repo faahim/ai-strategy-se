@@ -180,7 +180,7 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
       </div>
     </aside>
 
-    <main class="w-3/4 ml-auto px-5 md:px-10 mt-10">
+    <main class="w-3/4 ml-auto px-5 md:px-10 mt-10 mb-20">
       <div class="text-left mb-5">
         <h1 class="text-2xl font-semibold mb-2">Community data sources</h1>
         <p class="text-gray-600">
@@ -200,97 +200,57 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
 
       <!-- Results section with category groups -->
       <div class="relative min-h-[200px]">
-        <!-- All Categories View -->
-        <div id="allCategoriesView" class="hidden mb-16">
-          <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
-            All Categories
-            <span class="text-base font-normal text-gray-500">
-              ({aiTools.length} tools)
-            </span>
-          </h2>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {aiTools.map((tool) => (
-              <div 
-                class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
-                       hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
-                       hover:outline hover:outline-indigo-200 cursor-pointer group transition-all duration-300"
-                data-category={tool.category}
-                data-tags={tool.tags.join(',')}
-              >
-                <div class="flex items-center gap-3 mb-3">
-                  <h2 class="text-[15px] font-medium text-gray-900">
-                    {tool.name}
-                  </h2>
+        {groupsWithCounts.map(({group, categories, count}) => (
+          <div class="mb-16" data-category-group={group}>
+            <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
+              {group}
+              <span class="text-base font-normal text-gray-500">
+                ({count} tools)
+              </span>
+            </h2>
+            
+            {categories.map(category => (
+              toolsByCategory[category]?.length > 0 && (
+                <div class="mb-12" data-category-section={category}>
+                  <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-700 pl-4 border-l-4 border-indigo-400">
+                    <span class="capitalize">{category.replace(/[_-]/g, ' ')}</span>
+                    <span class="text-sm font-normal text-gray-500">
+                      ({toolsByCategory[category].length})
+                    </span>
+                  </h3>
+                  
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {toolsByCategory[category].map((tool) => (
+                      <div 
+                        class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
+                               hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
+                               hover:outline hover:outline-indigo-200 cursor-pointer group transition-all duration-300"
+                        data-category={tool.category}
+                        data-tags={tool.tags.join(',')}
+                      >
+                        <div class="flex items-center gap-3 mb-3">
+                          <h2 class="text-[15px] font-medium text-gray-900">
+                            {tool.name}
+                          </h2>
+                        </div>
+
+                        <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                          {tool.description}
+                        </p>
+
+                        <button class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
+                          <span class="material-icons text-[18px]">link</span>
+                          Connect
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-
-                <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
-                  {tool.description}
-                </p>
-
-                <button class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
-                  <span class="material-icons text-[18px]">link</span>
-                  Connect
-                </button>
-              </div>
+              )
             ))}
           </div>
-        </div>
-
-        <!-- Grouped Categories View -->
-        <div id="groupedCategoriesView">
-          {groupsWithCounts.map(({group, categories, count}) => (
-            <div class="mb-16" data-category-group={group}>
-              <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
-                {group}
-                <span class="text-base font-normal text-gray-500">
-                  ({count} tools)
-                </span>
-              </h2>
-              
-              {categories.map(category => (
-                toolsByCategory[category]?.length > 0 && (
-                  <div class="mb-12" data-category-section={category}>
-                    <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-700 pl-4 border-l-4 border-indigo-400">
-                      <span class="capitalize">{category.replace(/[_-]/g, ' ')}</span>
-                      <span class="text-sm font-normal text-gray-500">
-                        ({toolsByCategory[category].length})
-                      </span>
-                    </h3>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {toolsByCategory[category].map((tool) => (
-                        <div 
-                          class="tool-card p-5 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 
-                                 hover:bg-[#FBFAFF] hover:shadow-md hover:shadow-indigo-500/10 
-                                 hover:outline hover:outline-indigo-200 cursor-pointer group transition-all duration-300"
-                          data-category={tool.category}
-                          data-tags={tool.tags.join(',')}
-                        >
-                          <div class="flex items-center gap-3 mb-3">
-                            <h2 class="text-[15px] font-medium text-gray-900">
-                              {tool.name}
-                            </h2>
-                          </div>
-
-                          <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
-                            {tool.description}
-                          </p>
-
-                          <button class="py-[6px] px-4 rounded-md border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group-hover:bg-white group-hover:border-gray-300 shadow-md">
-                            <span class="material-icons text-[18px]">link</span>
-                            Connect
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )
-              ))}
-            </div>
-          ))}
-        </div>
-
+        ))}
+        
         <!-- Empty state -->
         <div id="searchEmptyState" class="hidden absolute inset-0">
           <EmptyStateComponent />
