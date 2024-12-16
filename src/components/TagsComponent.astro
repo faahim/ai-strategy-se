@@ -175,17 +175,19 @@ function getTagGroup(tag: string): string {
   const filterTools = () => {
     const tools = document.querySelectorAll('.tool-card');
     let visibleTools = 0;
+    const matchedResults = document.getElementById('matchedResults');
+    const matchCount = document.getElementById('matchCount');
 
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
       const htmlTool = tool as HTMLElement;
 
-      // If no tags are selected, show all tools without filtered class
+      // If no tags are selected, show all tools
       if (selectedTags.size === 0) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
-        htmlTool.classList.remove('filtered');
         visibleTools++;
+        matchedResults?.classList.add('hidden');
         return;
       }
 
@@ -197,14 +199,20 @@ function getTagGroup(tag: string): string {
       if (hasSelectedTag) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
-        htmlTool.classList.add('filtered');
         visibleTools++;
       } else {
         htmlTool.style.display = 'none';
         htmlTool.style.opacity = '0';
-        htmlTool.classList.remove('filtered');
       }
     });
+
+    // Update match count
+    if (selectedTags.size > 0) {
+      matchedResults?.classList.remove('hidden');
+      if (matchCount) {
+        matchCount.textContent = visibleTools.toString();
+      }
+    }
 
     // Show/hide category sections based on visible tools
     document.querySelectorAll('[data-category-group]').forEach(section => {
@@ -225,6 +233,7 @@ function getTagGroup(tag: string): string {
   // Function to clear all filters
   const clearFilters = () => {
     selectedTags.clear();
+    document.getElementById('matchedResults')?.classList.add('hidden');
     
     // Reset all tag buttons
     document.querySelectorAll('.tag-button').forEach((button) => {
