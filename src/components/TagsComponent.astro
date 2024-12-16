@@ -186,6 +186,7 @@ function getTagGroup(tag: string): string {
       if (selectedTags.size === 0) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
+        htmlTool.classList.remove('filtered');
         visibleTools++;
         matchedResults?.classList.add('hidden');
         return;
@@ -199,10 +200,12 @@ function getTagGroup(tag: string): string {
       if (hasSelectedTag) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
+        htmlTool.classList.add('filtered');
         visibleTools++;
       } else {
         htmlTool.style.display = 'none';
         htmlTool.style.opacity = '0';
+        htmlTool.classList.remove('filtered');
       }
     });
 

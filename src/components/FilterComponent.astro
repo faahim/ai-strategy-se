@@ -15,66 +15,105 @@ interface Tool {
 
 // Define category groups
 const categoryGroups = {
-  "AI & Development": [
-    "developer-tools", "code", "local_search_engine", "chatgpt-extensions",
-    "ai-models", "llm models"
+  'AI & Development': [
+    'developer-tools',
+    'code',
+    'local_search_engine',
+    'chatgpt-extensions',
+    'ai-models',
+    'llm models',
   ],
-  "Content & Creation": [
-    "writing-assistants", "content-creation", "text-generators",
-    "graphic-design", "image-libraries", "video"
+  'Content & Creation': [
+    'writing-assistants',
+    'content-creation',
+    'text-generators',
+    'graphic-design',
+    'image-libraries',
+    'video',
   ],
-  "Business & Productivity": [
-    "productivity", "business", "marketing", "customer-support",
-    "automation", "no-code"
+  'Business & Productivity': [
+    'productivity',
+    'business',
+    'marketing',
+    'customer-support',
+    'automation',
+    'no-code',
   ],
-  "Education & Research": [
-    "education", "academia", "learning-resource", "machine-learning",
-    "deep-learning", "research"
+  'Education & Research': [
+    'education',
+    'academia',
+    'learning-resource',
+    'machine-learning',
+    'deep-learning',
+    'research',
   ],
-  "Communication & Media": [
-    "speech", "meeting-assistants", "phone-calls", "ai-voice-cloning",
-    "services", "stable-Diffusion-resources"
+  'Communication & Media': [
+    'speech',
+    'meeting-assistants',
+    'phone-calls',
+    'ai-voice-cloning',
+    'services',
+    'stable-Diffusion-resources',
   ],
-  "Tools & Services": [
-    "search-engine", "marketplace", "ai-safety", "finance",
-    "events", "design"
-  ]
+  'Tools & Services': [
+    'search-engine',
+    'marketplace',
+    'ai-safety',
+    'finance',
+    'events',
+    'design',
+  ],
 } as const;
 
 // Sort categories by count within their groups
-const categoriesByGroup = Object.entries(categoryGroups).reduce((acc, [group, categories]) => {
-  const categoriesWithCount = categories
-    .filter(category => aiTools.some(tool => tool.category === category))
-    .map(category => ({
-      category,
-      count: aiTools.filter(tool => tool.category === category).length
-    }))
-    .sort((a, b) => b.count - a.count);
-    
-  acc[group] = categoriesWithCount.map(c => c.category);
-  return acc;
-}, {} as Record<string, string[]>);
+const categoriesByGroup = Object.entries(categoryGroups).reduce(
+  (acc, [group, categories]) => {
+    const categoriesWithCount = categories
+      .filter((category) => aiTools.some((tool) => tool.category === category))
+      .map((category) => ({
+        category,
+        count: aiTools.filter((tool) => tool.category === category).length,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    acc[group] = categoriesWithCount.map((c) => c.category);
+    return acc;
+  },
+  {} as Record<string, string[]>
+);
 
 // Sort groups by total tool count
-const groupsWithCounts = Object.entries(categoriesByGroup).map(([group, categories]) => {
-  const totalTools = categories.reduce((sum, category) => 
-    sum + aiTools.filter(tool => tool.category === category).length, 0
-  );
-  return { group, categories, count: totalTools };
-}).sort((a, b) => b.count - a.count);
+const groupsWithCounts = Object.entries(categoriesByGroup)
+  .map(([group, categories]) => {
+    const totalTools = categories.reduce(
+      (sum, category) =>
+        sum + aiTools.filter((tool) => tool.category === category).length,
+      0
+    );
+    return { group, categories, count: totalTools };
+  })
+  .sort((a, b) => b.count - a.count);
 
 // Group tools by category
-const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, category) => {
-  acc[category] = aiTools.filter((tool: Tool) => tool.category === category);
-  return acc;
-}, {} as Record<string, Tool[]>);
+const toolsByCategory = Object.values(categoryGroups)
+  .flat()
+  .reduce(
+    (acc, category) => {
+      acc[category] = aiTools.filter(
+        (tool: Tool) => tool.category === category
+      );
+      return acc;
+    },
+    {} as Record<string, Tool[]>
+  );
 ---
 
 <div>
   <div class="flex h-screen max-w-full mx-auto">
     <aside class="w-1/4 flex fixed left-0 top-0">
       <!-- Primary Sidebar -->
-      <div class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
+      <div
+        class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
         <!-- Logo Section -->
         <div class="p-4 border-b border-gray-800 mx-auto">
           <div
@@ -188,7 +227,9 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
           admin access to connect data sources.
         </p>
         <p class="font-normal text-gray-600 mt-5">
-          RECOMMENDED <span class="material-icons text-sm text-yellow-500">star</span>
+          RECOMMENDED <span class="material-icons text-sm text-yellow-500"
+            >star</span
+          >
         </p>
       </div>
 
@@ -201,35 +242,41 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
       <!-- Results Counter -->
       <div id="matchedResults" class="hidden mb-6">
         <span class="text-sm text-indigo-600 font-medium">
-          Showing <span class="font-bold underline text-base" id="matchCount">0</span> matched results
+          Showing <span class="font-bold underline text-base" id="matchCount"
+            >0</span
+          > matched results
         </span>
       </div>
 
       <!-- Results section with category groups -->
       <div class="relative min-h-[200px] pb-20">
-        {groupsWithCounts.map(({group, categories, count}) => (
-          <div class="mb-16" data-category-group={group}>
-            <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
-              {group}
-              <span class="text-base font-normal text-gray-500">
-                ({count} tools)
-              </span>
-            </h2>
-            
-            {categories.map(category => (
-              toolsByCategory[category]?.length > 0 && (
-                <div class="mb-12" data-category-section={category}>
-                  <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-700 pl-4 border-l-4 border-indigo-400">
-                    <span class="capitalize">{category.replace(/[_-]/g, ' ')}</span>
-                    <span class="text-sm font-normal text-gray-500">
-                      ({toolsByCategory[category].length})
-                    </span>
-                  </h3>
-                  
-                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {toolsByCategory[category].map((tool) => (
-                      <div 
-                        class="tool-card p-5 bg-white rounded-lg border border-gray-200 
+        {
+          groupsWithCounts.map(({ group, categories, count }) => (
+            <div class="mb-16" data-category-group={group}>
+              <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
+                {group}
+                <span class="text-base font-normal text-gray-500">
+                  ({count} tools)
+                </span>
+              </h2>
+
+              {categories.map(
+                (category) =>
+                  toolsByCategory[category]?.length > 0 && (
+                    <div class="mb-12" data-category-section={category}>
+                      <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-700 pl-4 border-l-4 border-indigo-400">
+                        <span class="capitalize">
+                          {category.replace(/[_-]/g, ' ')}
+                        </span>
+                        <span class="text-sm font-normal text-gray-500">
+                          ({toolsByCategory[category].length})
+                        </span>
+                      </h3>
+
+                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {toolsByCategory[category].map((tool) => (
+                          <div
+                            class="tool-card p-5 bg-white rounded-lg border border-gray-200 
                                hover:border-indigo-500 hover:bg-[#FBFAFF] 
                                hover:shadow-lg hover:shadow-indigo-500/20
                                hover:outline hover:outline-indigo-200 
@@ -238,21 +285,20 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
                                [&.filtered]:scale-[1.02] [&.filtered]:border-indigo-400
                                [&.filtered]:bg-gradient-to-br [&.filtered]:from-white [&.filtered]:to-indigo-50/50
                                [&.filtered]:shadow-md [&.filtered]:shadow-indigo-500/10"
-                        data-category={tool.category}
-                        data-tags={tool.tags.join(',')}
-                      >
-                        <div class="flex items-center gap-3 mb-3">
-                          <h2 class="text-[15px] font-medium text-gray-900 group-[.filtered]:text-indigo-900">
-                            {tool.name}
-                          </h2>
-                        </div>
+                            data-category={tool.category}
+                            data-tags={tool.tags.join(',')}>
+                            <div class="flex items-center gap-3 mb-3">
+                              <h2 class="text-[15px] font-medium text-gray-900 group-[.filtered]:text-indigo-900">
+                                {tool.name}
+                              </h2>
+                            </div>
 
-                        <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
-                          {tool.description}
-                        </p>
+                            <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                              {tool.description}
+                            </p>
 
-                        <button 
-                          class="py-[6px] px-4 rounded-md border border-gray-200 
+                            <button
+                              class="py-[6px] px-4 rounded-md border border-gray-200 
                                  text-[13px] font-medium text-gray-700 
                                  hover:bg-gray-50 transition-colors 
                                  flex items-center justify-center gap-2 
@@ -260,20 +306,22 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
                                  shadow-md
                                  group-[.filtered]:border-indigo-200
                                  group-[.filtered]:bg-indigo-50/50
-                                 group-[.filtered]:text-indigo-700"
-                        >
-                          <span class="material-icons text-[18px]">link</span>
-                          Connect
-                        </button>
+                                 group-[.filtered]:text-indigo-700">
+                              <span class="material-icons text-[18px]">
+                                link
+                              </span>
+                              Connect
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )
-            ))}
-          </div>
-        ))}
-        
+                    </div>
+                  )
+              )}
+            </div>
+          ))
+        }
+
         <!-- Empty state -->
         <div id="searchEmptyState" class="hidden absolute inset-0">
           <EmptyStateComponent />
@@ -290,13 +338,19 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
   const toolCards = document.querySelectorAll('.tool-card');
 
   function updateSearchResults() {
-    const visibleTools = document.querySelectorAll('.tool-card:not([style*="display: none"])');
-    const categorySections = document.querySelectorAll('[data-category-section]');
+    const visibleTools = document.querySelectorAll(
+      '.tool-card:not([style*="display: none"])'
+    );
+    const categorySections = document.querySelectorAll(
+      '[data-category-section]'
+    );
     let hasVisibleTools = false;
 
     // Check each category section
-    categorySections.forEach(section => {
-      const toolsInSection = section.querySelectorAll('.tool-card:not([style*="display: none"])');
+    categorySections.forEach((section) => {
+      const toolsInSection = section.querySelectorAll(
+        '.tool-card:not([style*="display: none"])'
+      );
       if (toolsInSection.length === 0) {
         (section as HTMLElement).style.display = 'none';
       } else {
@@ -319,13 +373,16 @@ const toolsByCategory = Object.values(categoryGroups).flat().reduce((acc, catego
   // Listen for changes to tool card visibility
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'style'
+      ) {
         updateSearchResults();
       }
     });
   });
 
-  toolCards.forEach(card => {
+  toolCards.forEach((card) => {
     observer.observe(card, { attributes: true });
   });
 
