@@ -80,6 +80,60 @@ const groupCounts = groupCountsAndNames.reduce((acc, {group, count}) => {
 
 <script>
   const categoryGroups = document.querySelectorAll('.category-group');
+  let selectedCategories: string[] = [];
+
+  // Function to filter tools based on both tags and categories
+  function filterTools() {
+    const tools = document.querySelectorAll('.tool-card');
+    const selectedTags = new Set(Array.from(document.querySelectorAll('.tag-button.bg-indigo-100'))
+      .map(tag => tag.getAttribute('data-tag')));
+
+    tools.forEach(tool => {
+      const htmlTool = tool as HTMLElement;
+      const toolCategory = htmlTool.getAttribute('data-category');
+      const toolTags = (htmlTool.getAttribute('data-tags') || '').split(',');
+      
+      const matchesCategory = selectedCategories.length === 0 || 
+        selectedCategories.includes('all') || 
+        selectedCategories.includes(toolCategory!);
+        
+      const matchesTags = selectedTags.size === 0 || 
+        toolTags.some(tag => selectedTags.has(tag));
+
+      // Show/hide tools based on both filters
+      if (matchesCategory && matchesTags) {
+        htmlTool.style.display = 'block';
+        htmlTool.style.opacity = '1';
+      } else {
+        htmlTool.style.opacity = '0';
+        setTimeout(() => {
+          htmlTool.style.display = 'none';
+        }, 300);
+      }
+    });
+
+    // Update empty state if needed
+    const visibleTools = document.querySelectorAll('.tool-card[style*="display: block"]');
+    const searchEmptyState = document.getElementById('searchEmptyState');
+    if (visibleTools.length === 0) {
+      searchEmptyState?.classList.remove('hidden');
+    } else {
+      searchEmptyState?.classList.add('hidden');
+    }
+
+    // Hide category sections with no visible tools
+    document.querySelectorAll('[data-category-group]').forEach(section => {
+      const visibleToolsInSection = section.querySelectorAll('.tool-card[style*="display: block"]');
+      if (visibleToolsInSection.length === 0) {
+        (section as HTMLElement).style.display = 'none';
+      } else {
+        (section as HTMLElement).style.display = 'block';
+      }
+    });
+  }
+
+  // Make filterTools function available globally
+  window.filterTools = filterTools;
   
   categoryGroups.forEach(group => {
     group.addEventListener('click', () => {
@@ -91,38 +145,24 @@ const groupCounts = groupCountsAndNames.reduce((acc, {group, count}) => {
       categoryGroups.forEach(g => g.classList.remove('bg-indigo-100', 'text-indigo-700'));
       group.classList.add('bg-indigo-100', 'text-indigo-700');
 
-      if (groupName === 'All Categories') {
-        // Show all tools
-        const tools = document.querySelectorAll('.tool-card');
-        tools.forEach(tool => {
-          (tool as HTMLElement).style.display = 'block';
-        });
+      // Update selected categories
+      selectedCategories = categories;
 
-        // Scroll to top
+      if (groupName === 'All Categories') {
+        selectedCategories = ['all'];
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
       } else {
-        // Highlight selected category's tools
-        const tools = document.querySelectorAll('.tool-card');
-        tools.forEach(tool => {
-          const toolCategory = tool.getAttribute('data-category');
-          const htmlTool = tool as HTMLElement;
-          
-          if (categories.includes(toolCategory!)) {
-            htmlTool.classList.add('ring-2', 'ring-indigo-500');
-          } else {
-            htmlTool.classList.remove('ring-2', 'ring-indigo-500');
-          }
-        });
-
-        // Scroll to selected category
         const categorySection = document.querySelector(`[data-category-group="${groupName}"]`);
         if (categorySection) {
           categorySection.scrollIntoView({ behavior: 'smooth' });
         }
       }
+
+      // Apply combined filtering
+      filterTools();
     });
   });
 </script>

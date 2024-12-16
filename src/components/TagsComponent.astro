@@ -35,7 +35,7 @@ const tagGroups: Record<string, string[]> = {
     "Communication", "Social Media", "Email", "Chat", "Messaging",
     "Collaboration", "Community"
   ]
-} as const;
+};
 
 // Get all tags from tools
 const allTags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
@@ -302,3 +302,33 @@ function getTagGroup(tag: string): string {
     min-width: 300px;
   }
 </style>
+
+<script>
+  declare global {
+    interface Window {
+      filterTools: () => void;
+    }
+  }
+
+  const tagButtons = document.querySelectorAll('.tag-button');
+  
+  tagButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tag = button.getAttribute('data-tag');
+      if (!tag) return;
+
+      // Toggle selection
+      button.classList.toggle('bg-indigo-100');
+      button.classList.toggle('text-indigo-700');
+
+      // Call the global filterTools function
+      if (typeof window.filterTools === 'function') {
+        window.filterTools();
+      }
+
+      // Close dropdown after selection
+      const dropdown = button.closest('.tag-dropdown');
+      dropdown?.classList.add('hidden');
+    });
+  });
+</script>
