@@ -145,24 +145,32 @@ const groupCounts = groupCountsAndNames.reduce((acc, {group, count}) => {
       categoryGroups.forEach(g => g.classList.remove('bg-indigo-100', 'text-indigo-700'));
       group.classList.add('bg-indigo-100', 'text-indigo-700');
 
-      // Update selected categories
-      selectedCategories = categories;
-
       if (groupName === 'All Categories') {
-        selectedCategories = ['all'];
+        // Show all sections that have visible tools
+        document.querySelectorAll('[data-category-group]').forEach(section => {
+          const hasVisibleTools = section.querySelector('.tool-card[style*="display: block"]');
+          if (hasVisibleTools) {
+            (section as HTMLElement).style.display = 'block';
+          }
+        });
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
       } else {
+        // Hide all sections except the selected one
+        document.querySelectorAll('[data-category-group]').forEach(section => {
+          const sectionName = section.getAttribute('data-category-group');
+          (section as HTMLElement).style.display = 
+            sectionName === groupName ? 'block' : 'none';
+        });
+
+        // Scroll to selected category
         const categorySection = document.querySelector(`[data-category-group="${groupName}"]`);
         if (categorySection) {
           categorySection.scrollIntoView({ behavior: 'smooth' });
         }
       }
-
-      // Apply combined filtering
-      filterTools();
     });
   });
 </script>

@@ -180,7 +180,6 @@ function getTagGroup(tag: string): string {
 
     // Track visible tools per category
     const visibleCategoryCounts: Record<string, number> = {};
-    const visibleGroupCounts: Record<string, number> = {};
 
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
@@ -194,6 +193,11 @@ function getTagGroup(tag: string): string {
         htmlTool.classList.remove('filtered');
         visibleTools++;
         matchedResults?.classList.add('hidden');
+
+        // Show all category sections
+        document.querySelectorAll('[data-category-group]').forEach(section => {
+          (section as HTMLElement).style.display = 'block';
+        });
         return;
       }
 
@@ -225,10 +229,8 @@ function getTagGroup(tag: string): string {
       const countSpan = button.querySelector('span:last-child');
       if (categories && countSpan) {
         if (categories.includes('all')) {
-          // Update "All Categories" count
           countSpan.textContent = visibleTools.toString();
         } else {
-          // Sum up counts for categories in this group
           const groupCount = categories.reduce((sum, cat) => 
             sum + (visibleCategoryCounts[cat] || 0), 0);
           countSpan.textContent = groupCount.toString();
@@ -244,11 +246,15 @@ function getTagGroup(tag: string): string {
       }
     }
 
-    // Show/hide category sections based on visible tools
-    document.querySelectorAll('[data-category-group]').forEach(section => {
-      const hasVisibleTools = section.querySelector('.tool-card[style*="display: block"]');
-      (section as HTMLElement).style.display = hasVisibleTools ? 'block' : 'none';
-    });
+    // Show all category sections by default when filtering by tags
+    if (selectedTags.size > 0) {
+      document.querySelectorAll('[data-category-group]').forEach(section => {
+        const hasVisibleTools = section.querySelector('.tool-card[style*="display: block"]');
+        if (hasVisibleTools) {
+          (section as HTMLElement).style.display = 'block';
+        }
+      });
+    }
 
     // Toggle empty state
     if (visibleTools === 0) {
