@@ -176,23 +176,15 @@ function getTagGroup(tag: string): string {
     const tools = document.querySelectorAll('.tool-card');
     let visibleTools = 0;
 
-    // Hide all tools first
-    tools.forEach(tool => {
-      const htmlTool = tool as HTMLElement;
-      htmlTool.style.display = 'none';
-      htmlTool.style.opacity = '0';
-    });
-
-    // Show only tools that match selected tags
     tools.forEach((tool) => {
       const toolTags = (tool.getAttribute('data-tags') || '').split(',');
       const htmlTool = tool as HTMLElement;
-      const categorySection = htmlTool.closest('[data-category-group]');
 
-      // If no tags are selected, show all tools
+      // If no tags are selected, show all tools without filtered class
       if (selectedTags.size === 0) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
+        htmlTool.classList.remove('filtered');
         visibleTools++;
         return;
       }
@@ -205,7 +197,12 @@ function getTagGroup(tag: string): string {
       if (hasSelectedTag) {
         htmlTool.style.display = 'block';
         htmlTool.style.opacity = '1';
+        htmlTool.classList.add('filtered');
         visibleTools++;
+      } else {
+        htmlTool.style.display = 'none';
+        htmlTool.style.opacity = '0';
+        htmlTool.classList.remove('filtered');
       }
     });
 
@@ -337,10 +334,6 @@ function getTagGroup(tag: string): string {
       if (typeof window.filterTools === 'function') {
         window.filterTools();
       }
-
-      // Close dropdown after selection
-      const dropdown = button.closest('.tag-dropdown');
-      dropdown?.classList.add('hidden');
     });
   });
 </script>
