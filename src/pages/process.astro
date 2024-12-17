@@ -1,0 +1,277 @@
+---
+import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
+import EmptyStateComponent from '../components/EmptyStateComponent.astro';
+import HeaderComponent from '../components/HeaderComponent.astro';
+import LeftAsideComponent from '../components/LeftAsideComponent.astro';
+import ResultsCounterComponent from '../components/ResultsCounterComponent.astro';
+import SearchAndSortComponent from '../components/SearchAndSortComponent.astro';
+import TagsComponent from '../components/TagsComponent.astro';
+
+
+interface Tool {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  tags: string[];
+}
+
+// Define category groups
+const categoryGroups = {
+  'AI & Development': [
+    'developer-tools',
+    'code',
+    'local_search_engine',
+    'chatgpt-extensions',
+    'ai-models',
+    'llm models',
+  ],
+  'Content & Creation': [
+    'writing-assistants',
+    'content-creation',
+    'text-generators',
+    'graphic-design',
+    'image-libraries',
+    'video',
+  ],
+  'Business & Productivity': [
+    'productivity',
+    'business',
+    'marketing',
+    'customer-support',
+    'automation',
+    'no-code',
+  ],
+  'Education & Research': [
+    'education',
+    'academia',
+    'learning-resource',
+    'machine-learning',
+    'deep-learning',
+    'research',
+  ],
+  'Communication & Media': [
+    'speech',
+    'meeting-assistants',
+    'phone-calls',
+    'ai-voice-cloning',
+    'services',
+    'stable-Diffusion-resources',
+  ],
+  'Tools & Services': [
+    'search-engine',
+    'marketplace',
+    'ai-safety',
+    'finance',
+    'events',
+    'design',
+  ],
+} as const;
+
+// Sort categories by count within their groups
+const categoriesByGroup = Object.entries(categoryGroups).reduce(
+  (acc, [group, categories]) => {
+    const categoriesWithCount = categories
+      .filter((category) => aiTools.some((tool) => tool.category === category))
+      .map((category) => ({
+        category,
+        count: aiTools.filter((tool) => tool.category === category).length,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    acc[group] = categoriesWithCount.map((c) => c.category);
+    return acc;
+  },
+  {} as Record<string, string[]>
+);
+
+// Sort groups by total tool count
+const groupsWithCounts = Object.entries(categoriesByGroup)
+  .map(([group, categories]) => {
+    const totalTools = categories.reduce(
+      (sum, category) =>
+        sum + aiTools.filter((tool) => tool.category === category).length,
+      0
+    );
+    return { group, categories, count: totalTools };
+  })
+  .sort((a, b) => b.count - a.count);
+
+// Group tools by category
+const toolsByCategory = Object.values(categoryGroups)
+  .flat()
+  .reduce(
+    (acc, category) => {
+      acc[category] = aiTools.filter(
+        (tool: Tool) => tool.category === category
+      );
+      return acc;
+    },
+    {} as Record<string, Tool[]>
+  );
+---
+
+<div>
+  <div class="flex h-screen max-w-full mx-auto">
+    <!-- Left Aside Bar -->
+    <LeftAsideComponent />
+
+    <!-- Middle Secton  -->
+    <section class="w-3/4 ml-auto px-5 md:px-10 mt-10">
+      <!-- Header  -->
+      <HeaderComponent />
+      <!-- Tags  -->
+      <TagsComponent />
+      <!-- Search and sort -->
+      <SearchAndSortComponent />
+
+      <!-- Results Counter -->
+      <ResultsCounterComponent />
+
+      <!-- Results section with category groups -->
+      <div class="relative min-h-[200px] pb-20">
+        {
+          groupsWithCounts.map(({ group, categories, count }) => (
+            <div class="mb-16" data-category-group={group}>
+              <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center gap-2">
+                {group}
+                {/* <span class="text-base font-normal text-gray-500">
+                  ({count} tools)
+                </span> */}
+              </h2>
+
+              {categories.map(
+                (category) =>
+                  toolsByCategory[category]?.length > 0 && (
+                    <div class="mb-12" data-category-section={category}>
+                      <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gray-700 bg-indigo-200/50 py-3 pl-4 border-l-4 rounded-r-sm border-indigo-400">
+                        <span class="uppercase">
+                          {category.replace(/[_-]/g, ' ')}
+                        </span>
+                        {/* <span class="text-sm font-normal text-gray-500">
+                          ({toolsByCategory[category].length})
+                        </span> */}
+                      </h3>
+
+                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {toolsByCategory[category].map((tool) => (
+                          <div
+                            class="tool-card p-5 bg-white rounded-lg border border-gray-200 
+                               hover:border-indigo-500 hover:bg-[#FBFAFF] 
+                               hover:shadow-lg hover:shadow-indigo-500/20
+                               hover:outline hover:outline-indigo-200 
+                               cursor-pointer group 
+                               transition-all duration-300
+                               [&.filtered]:scale-[1.02] [&.filtered]:border-indigo-400
+                               [&.filtered]:bg-gradient-to-br [&.filtered]:from-white [&.filtered]:to-indigo-50/50
+                               [&.filtered]:shadow-md [&.filtered]:shadow-indigo-500/10"
+                            data-category={tool.category}
+                            data-tags={tool.tags.join(',')}>
+                            <div class="flex items-center gap-3 mb-3">
+                              <h2 class="text-[15px] font-medium text-gray-900 group-[.filtered]:text-indigo-900">
+                                {tool.name}
+                              </h2>
+                            </div>
+
+                            <p class="text-[13px] text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                              {tool.description}
+                            </p>
+
+                            <button
+                              class="py-[6px] px-4 rounded-md border border-gray-200 
+                                 text-[13px] font-medium text-gray-700 
+                                 hover:bg-gray-50 transition-colors 
+                                 flex items-center justify-center gap-2 
+                                 group-hover:bg-white group-hover:border-gray-300 
+                                 shadow-md
+                                 group-[.filtered]:border-indigo-200
+                                 group-[.filtered]:bg-indigo-50/50
+                                 group-[.filtered]:text-indigo-700">
+                              <span class="material-icons text-[18px]">
+                                link
+                              </span>
+                              Connect
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+              )}
+            </div>
+          ))
+        }
+
+        <!-- Empty state -->
+        <div id="searchEmptyState" class="hidden absolute inset-0">
+          <EmptyStateComponent />
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.querySelector('input[type="search"]');
+  const toolsGrid = document.getElementById('toolsGrid')!;
+  const searchEmptyState = document.getElementById('searchEmptyState')!;
+  const toolCards = document.querySelectorAll('.tool-card');
+
+  function updateSearchResults() {
+    const visibleTools = document.querySelectorAll(
+      '.tool-card:not([style*="display: none"])'
+    );
+    const categorySections = document.querySelectorAll(
+      '[data-category-section]'
+    );
+    let hasVisibleTools = false;
+
+    // Check each category section
+    categorySections.forEach((section) => {
+      const toolsInSection = section.querySelectorAll(
+        '.tool-card:not([style*="display: none"])'
+      );
+      if (toolsInSection.length === 0) {
+        (section as HTMLElement).style.display = 'none';
+      } else {
+        (section as HTMLElement).style.display = 'block';
+        hasVisibleTools = true;
+      }
+    });
+
+    // Show/hide empty state
+    if (!hasVisibleTools) {
+      searchEmptyState?.classList.remove('hidden');
+    } else {
+      searchEmptyState?.classList.add('hidden');
+    }
+  }
+
+  // Listen for input changes
+  searchInput?.addEventListener('input', updateSearchResults);
+
+  // Listen for changes to tool card visibility
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'style'
+      ) {
+        updateSearchResults();
+      }
+    });
+  });
+
+  toolCards.forEach((card) => {
+    observer.observe(card, { attributes: true });
+  });
+
+  // Initial check
+  updateSearchResults();
+</script>
+
+<style>
+  .tool-card {
+    transition: all 300ms ease-in-out;
+  }
+</style>
