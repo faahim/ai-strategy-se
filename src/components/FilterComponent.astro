@@ -1,12 +1,9 @@
 ---
 import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
-import EmptyStateComponent from '../components/EmptyStateComponent.astro';
-import HeaderComponent from '../components/HeaderComponent.astro';
-import LeftAsideComponent from '../components/LeftAsideComponent.astro';
-import ResultsCounterComponent from '../components/ResultsCounterComponent.astro';
-import SearchAndSortComponent from '../components/SearchAndSortComponent.astro';
-import TagsComponent from '../components/TagsComponent.astro';
-
+import TagsComponent from './TagsComponent.astro';
+import ToolbarComponent from './ToolbarComponent.astro';
+import EmptyStateComponent from './EmptyStateComponent.astro';
+import CategoriesComponent from './CategoriesComponent.astro';
 
 interface Tool {
   id: number;
@@ -113,44 +110,167 @@ const toolsByCategory = Object.values(categoryGroups)
 
 <div>
   <div class="flex h-screen max-w-full mx-auto">
-    <!-- Left Aside Bar -->
-    <LeftAsideComponent />
+    <aside class="w-1/4 flex fixed left-0 top-0">
+      <!-- Primary Sidebar -->
+      <div
+        class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
+        <!-- Logo Section -->
+        <div class="p-4 border-b border-gray-800 mx-auto">
+          <div
+            class="size-8 text-4xl rounded-lg flex items-center justify-center text-orange-300 font-semibold">
+            <a href="/">ai</a>
+          </div>
+        </div>
 
-    <!-- Middle Secton  -->
-    <section class="w-3/4 ml-auto px-5 md:px-10 mt-10">
-      <!-- Header  -->
-      <HeaderComponent />
-      <!-- Tags  -->
-      <TagsComponent />
-      <!-- Search and sort -->
-      <SearchAndSortComponent />
+        <!-- Main Navigation -->
+        <div class="flex-1 py-4">
+          <div class="px-4 space-y-1">
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">apps</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">view_agenda</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">person</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">analytics</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">extension</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="py-4 border-gray-800">
+          <div class="px-4 space-y-1">
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">settings</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">grid_view</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">chat</span>
+            </div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">account_circle</span>
+            </div>
+            <div class="border-t border-gray-500"></div>
+            <div
+              class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+              <span class="material-icons text-gray-400">logout</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Sidebar -->
+      <div class="flex-1 bg-white border-r border-gray-200">
+        <div class="p-4">
+          <h2 class="text-xl font-semibold">Integrations</h2>
+          <button
+            class="mt-4 w-full text-left px-4 py-2 border border-gray-300 rounded-lg text-blue-600 hover:bg-gray-50 flex items-center cursor-pointer">
+            <span class="material-icons text-blue-600 mr-2">add</span>
+            New integration
+          </button>
+
+          <!-- Connections Section -->
+          <div class="mt-6">
+            <div
+              class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+              <span class="material-icons mr-2 text-sm">link</span>
+              <span class="text-sm font-medium">Connections</span>
+            </div>
+          </div>
+
+          <!-- Directory Section -->
+          <div class="mt-1">
+            <div
+              class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+              <span class="material-icons mr-2 text-sm">code</span>
+              <span class="text-sm font-medium">API connections</span>
+            </div>
+          </div>
+
+          <!-- API Connections Section -->
+          <div class="mt-1">
+            <div
+              class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+              <span class="material-icons mr-2 text-sm">folder</span>
+              <span class="text-sm font-medium">Directory</span>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <CategoriesComponent />
+        </div>
+      </div>
+    </aside>
+
+    <main class="w-3/4 ml-auto px-5 md:px-10 mt-10">
+      <div class="text-left mb-5">
+        <h1 class="text-2xl font-semibold mb-2">Community data sources</h1>
+        <p class="text-gray-600">
+          Data sources let you connect community platforms to Ahoy. You may need
+          admin access to connect data sources.
+        </p>
+        <p class="font-normal text-gray-600 mt-5">
+          RECOMMENDED <span class="material-icons text-sm text-yellow-500"
+            >star</span
+          >
+        </p>
+      </div>
+
+      <!-- Search and filter section -->
+      <div>
+        <TagsComponent />
+        <ToolbarComponent />
+      </div>
 
       <!-- Results Counter -->
-      <ResultsCounterComponent />
+      <div id="matchedResults" class="hidden mb-6">
+        <span class="text-sm text-indigo-600 font-medium">
+          Showing <span class="font-bold underline text-base" id="matchCount"
+            >0</span
+          > matched results
+        </span>
+      </div>
 
       <!-- Results section with category groups -->
       <div class="relative min-h-[200px] pb-20">
         {
           groupsWithCounts.map(({ group, categories, count }) => (
             <div class="mb-16" data-category-group={group}>
-              <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center gap-2">
+              <h2 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-2">
                 {group}
-                {/* <span class="text-base font-normal text-gray-500">
+                <span class="text-base font-normal text-gray-500">
                   ({count} tools)
-                </span> */}
+                </span>
               </h2>
 
               {categories.map(
                 (category) =>
                   toolsByCategory[category]?.length > 0 && (
                     <div class="mb-12" data-category-section={category}>
-                      <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gray-700 bg-indigo-200/50 py-3 pl-4 border-l-4 rounded-r-sm border-indigo-400">
-                        <span class="uppercase">
+                      <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-700 pl-4 border-l-4 border-indigo-400">
+                        <span class="capitalize">
                           {category.replace(/[_-]/g, ' ')}
                         </span>
-                        {/* <span class="text-sm font-normal text-gray-500">
+                        <span class="text-sm font-normal text-gray-500">
                           ({toolsByCategory[category].length})
-                        </span> */}
+                        </span>
                       </h3>
 
                       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -207,7 +327,7 @@ const toolsByCategory = Object.values(categoryGroups)
           <EmptyStateComponent />
         </div>
       </div>
-    </section>
+    </main>
   </div>
 </div>
 
