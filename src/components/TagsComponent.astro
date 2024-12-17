@@ -283,8 +283,11 @@ function getTagGroup(tag: string): string {
       htmlTool.style.opacity = '1';
     });
 
+    
     filterTools();
     updateSelectedTagsDisplay();
+    // Reload the window
+    window.location.reload();
   };
 
   // Handle dropdown visibility
