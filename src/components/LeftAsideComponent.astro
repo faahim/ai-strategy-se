@@ -1,0 +1,111 @@
+---
+import CategoriesComponent from "./CategoriesComponent.astro";
+---
+
+<aside class="w-1/4 flex fixed left-0 top-0">
+  <!-- Primary Sidebar -->
+  <div class="bg-[#0F0B1F] min-h-screen flex flex-col border-r border-gray-800">
+    <!-- Logo Section -->
+    <div class="p-4 border-b border-gray-800 mx-auto">
+      <div
+        class="size-8 text-4xl rounded-lg flex items-center justify-center text-orange-300 font-semibold">
+        <a href="/">ai</a>
+      </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="flex-1 py-4">
+      <div class="px-4 space-y-1">
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">apps</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">view_agenda</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">person</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">analytics</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">extension</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="py-4 border-gray-800">
+      <div class="px-4 space-y-1">
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">settings</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">grid_view</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">chat</span>
+        </div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">account_circle</span>
+        </div>
+        <div class="border-t border-gray-500"></div>
+        <div
+          class="hover:bg-[#2D2A3B] p-2 rounded-lg cursor-pointer flex items-center justify-center">
+          <span class="material-icons text-gray-400">logout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Sidebar -->
+  <div class="flex-1 bg-white border-r border-gray-200">
+    <div class="p-4">
+      <h2 class="text-xl font-semibold">Integrations</h2>
+      <button
+        class="mt-4 w-full text-left px-4 py-2 border border-gray-300 rounded-lg text-blue-600 hover:bg-gray-50 flex items-center cursor-pointer">
+        <span class="material-icons text-blue-600 mr-2">add</span>
+        New integration
+      </button>
+
+      <!-- Connections Section -->
+      <div class="mt-6">
+        <div
+          class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+          <span class="material-icons mr-2 text-sm">link</span>
+          <span class="text-sm font-medium">Connections</span>
+        </div>
+      </div>
+
+      <!-- Directory Section -->
+      <div class="mt-1">
+        <div
+          class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+          <span class="material-icons mr-2 text-sm">code</span>
+          <span class="text-sm font-medium">API connections</span>
+        </div>
+      </div>
+
+      <!-- API Connections Section -->
+      <div class="mt-1">
+        <div
+          class="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+          <span class="material-icons mr-2 text-sm">folder</span>
+          <span class="text-sm font-medium">Directory</span>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <CategoriesComponent />
+    </div>
+  </div>
+</aside>

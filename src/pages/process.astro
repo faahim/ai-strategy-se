@@ -1,0 +1,37 @@
+---
+import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
+import EmptyStateComponent from '../components/EmptyStateComponent.astro';
+import FilteredResultsComponent from '../components/FilteredResultsComponent.astro';
+import HeaderComponent from '../components/HeaderComponent.astro';
+import LeftAsideComponent from '../components/LeftAsideComponent.astro';
+import ResultsCounterComponent from '../components/ResultsCounterComponent.astro';
+import SearchAndSortComponent from '../components/SearchAndSortComponent.astro';
+import TagsComponent from '../components/TagsComponent.astro';
+---
+
+<div>
+  <div class="flex h-screen max-w-full mx-auto">
+    <!-- Left Aside Bar -->
+    <LeftAsideComponent />
+
+    <!-- Middle Secton  -->
+    <section class="w-3/4 ml-auto px-5 md:px-10 mt-10">
+      <!-- Header  -->
+      <HeaderComponent />
+      <!-- Tags  -->
+      <TagsComponent />
+      <!-- Search and sort -->
+      <SearchAndSortComponent />
+
+      <!-- Results Counter -->
+      <ResultsCounterComponent />
+
+      <!-- Results section with category groups -->
+      <FilteredResultsComponent />
+    </section>
+  </div>
+</div>
+
+<!-- Filtration process  -->
+<script src="../components/FiltrationProcess.astro" />
+

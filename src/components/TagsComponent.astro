@@ -87,7 +87,7 @@ function getTagGroup(tag: string): string {
           </span>
         </button>
         
-        <!-- Dropdown content -->
+        {/* <!-- Dropdown content --> */}
         <div class="tag-dropdown hidden absolute z-10 mt-2 w-max bg-indigo-300/90 backdrop-blur-sm rounded-lg shadow-lg border border-indigo-400 py-3 px-4">
           <div class="grid grid-cols-2 gap-2">
             {groupTags.map(tag => (
@@ -283,8 +283,11 @@ function getTagGroup(tag: string): string {
       htmlTool.style.opacity = '1';
     });
 
+    
     filterTools();
     updateSelectedTagsDisplay();
+    // Reload the window
+    window.location.reload();
   };
 
   // Handle dropdown visibility

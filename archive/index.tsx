@@ -1,4 +1,4 @@
-import FormComponentStepOne from "../components/FormComponentStepOne";
+import FormComponentStepOne from "../src/components/FormComponentStepOne";
 
 const HomePage = () => {
   return (
