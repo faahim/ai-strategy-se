@@ -1,52 +1,17 @@
 ---
 import aiTools from '../assets/data/ai-tools.json' assert { type: 'json' };
+import { tagGroups } from '../utils/constants';
 
-// Define tag groups and their associated tags
-const tagGroups: Record<string, string[]> = {
-  "Development & Tools": [
-    "Developer Tools", "Code", "API", "Automation", "No Code/Low Code", 
-    "Open Source", "Testing", "Web Development", "Programming", "Assistant Code"
-  ],
-  "Content Creation": [
-    "Content Creation", "Writing", "Text Generators", "Content Generation",
-    "Copywriting", "Blogging", "Marketing Copy", "Creative Writing"
-  ],
-  "Business & Productivity": [
-    "Business", "Productivity", "Project Management", "Task Management",
-    "Team Collaboration", "Workflow Automation", "Enterprise"
-  ],
-  "AI & Machine Learning": [
-    "AI", "Machine Learning", "Large Language Models", "Neural Networks",
-    "LLM", "AI Agents", "ChatGPT", "Generative AI"
-  ],
-  "Design & Media": [
-    "Design", "Image Generation", "Video Creation", "Graphics",
-    "3D Model", "Art Creation", "Logo Design", "Visual Creation"
-  ],
-  "Education & Research": [
-    "Education", "Research & Science", "Academic Writing", "Learning",
-    "Studies", "Tutoring", "Course Creation"
-  ],
-  "Data & Analytics": [
-    "Data & Analytics", "Data Processing", "Analytics", "Business Intelligence",
-    "Data Science", "Data Visualization"
-  ],
-  "Communication & Social": [
-    "Communication", "Social Media", "Email", "Chat", "Messaging",
-    "Collaboration", "Community"
-  ]
-};
-
-// Get all tags from tools
+// Get all unique tags from tools
 const allTags = [...new Set(aiTools.flatMap((tool: any) => tool.tags || []))];
 
-// Count tools per tag
+// Count how many tools use each tag
 const tagCounts = allTags.reduce((acc, tag) => {
   acc[tag] = aiTools.filter((tool) => tool.tags.includes(tag)).length;
   return acc;
 }, {} as Record<string, number>);
 
-// Calculate total tools per group
+// Count total tools per group
 const groupCounts = Object.entries(tagGroups).reduce((acc, [group, tags]) => {
   const uniqueToolsInGroup = new Set(
     aiTools.filter(tool => 
@@ -56,16 +21,6 @@ const groupCounts = Object.entries(tagGroups).reduce((acc, [group, tags]) => {
   acc[group] = uniqueToolsInGroup.size;
   return acc;
 }, {} as Record<string, number>);
-
-// Function to get group for a tag
-function getTagGroup(tag: string): string {
-  for (const [group, tags] of Object.entries(tagGroups)) {
-    if (tags.includes(tag)) {
-      return group;
-    }
-  }
-  return "Other";
-}
 ---
 
 <div class="flex flex-col gap-4 mb-6">
@@ -88,19 +43,19 @@ function getTagGroup(tag: string): string {
         </button>
         
         <!-- Dropdown content -->
-        <div class="tag-dropdown hidden absolute z-10 mt-2 w-max bg-indigo-300/90 backdrop-blur-sm rounded-lg shadow-lg border border-indigo-400 py-3 px-4">
+        <div class="tag-dropdown hidden absolute z-10 mt-2 w-max bg-indigo-300/90 
+                    backdrop-blur-sm rounded-lg shadow-lg border border-indigo-400 py-3 px-4">
           <div class="grid grid-cols-2 gap-2">
             {groupTags.map(tag => (
               allTags.includes(tag) && (
                 <button
-                  class="tag-button text-left px-3 py-1.5 text-md text-indigo-800 hover:bg-indigo-50 rounded-md flex items-center  justify-between group"
+                  class="tag-button text-left px-3 py-1.5 text-md text-indigo-800 
+                         hover:bg-indigo-50 rounded-md flex items-center justify-between group"
                   data-tag={tag}
                 >
                   <span class="capitalize">{tag}</span>
-                  <span class="text-xs 
-               mx-2 bg-indigo-100/70 rounded-full px-2 py-0.5 text-indigo-600 
-                  group-hover:bg-indigo-200/70 
-                  group-hover:text-indigo-500">
+                  <span class="text-xs bg-indigo-100/70 rounded-full px-2 py-0.5 
+                             text-indigo-600 group-hover:bg-indigo-200/70">
                     {tagCounts[tag] || 0}
                   </span>
                 </button>
@@ -112,243 +67,13 @@ function getTagGroup(tag: string): string {
     ))}
   </div>
 
-  <!-- Selected Tags Container -->
-  <div
-    id="selectedTagsContainer"
-    class="hidden flex-col gap-2 mt-4 p-4 rounded-lg border border-indigo-200"
-  >
+  <!-- Selected Tags Display -->
+  <div id="selectedTagsContainer" 
+       class="hidden flex-col gap-2 mt-4 p-4 rounded-lg border border-indigo-200">
     <div class="text-slate-500 px-3 py-1.5">Selected tags:</div>
     <div class="flex flex-wrap gap-3 pl-3" id="selectedTagsList"></div>
   </div>
 </div>
-
-<script>
-  const groupContainers = document.querySelectorAll('.group-container');
-  const selectedTags = new Set<string>();
-  const selectedTagsContainer = document.getElementById('selectedTagsContainer');
-  const emptyState = document.getElementById('emptyState');
-
-  // Function to create a selected tag element
-  const createSelectedTagElement = (tag: string) => {
-    const tagEl = document.createElement('div');
-    tagEl.className = `px-3 py-1.5 text-sm text-white bg-gradient-to-r from-indigo-500 to-indigo-600 
-                       border border-indigo-400 rounded-full flex items-center gap-2 shadow-sm`;
-    tagEl.innerHTML = `
-      <span class="capitalize">${tag}</span>
-      <button class="remove-tag hover:text-indigo-200 transition-colors" data-tag="${tag}">
-        <span class="material-icons text-sm">close</span>
-      </button>
-    `;
-    return tagEl;
-  };
-
-  // Function to update selected tags display
-  const updateSelectedTagsDisplay = () => {
-    if (!selectedTagsContainer) return;
-    const selectedTagsList = document.getElementById('selectedTagsList');
-    if (!selectedTagsList) return;
-
-    selectedTagsList.innerHTML = '';
-
-    if (selectedTags.size > 0) {
-      selectedTagsContainer.classList.remove('hidden');
-      selectedTagsContainer.classList.add('flex');
-
-      Array.from(selectedTags).forEach((tag) => {
-        const tagEl = createSelectedTagElement(tag as string);
-        selectedTagsList.appendChild(tagEl);
-      });
-
-      // Add clear filters button
-      const clearBtn = document.createElement('button');
-      clearBtn.className = 'px-3 py-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors flex items-center gap-1 capitalize bg-red-200/80 backdrop-blur-sm rounded-full border border-red-200 shadow-sm';
-      clearBtn.innerHTML = `Clear all filters <span class="material-icons text-sm">close</span>`;
-      clearBtn.addEventListener('click', clearFilters);
-      selectedTagsList.appendChild(clearBtn);
-    } else {
-      selectedTagsContainer.classList.add('hidden');
-      selectedTagsContainer.classList.remove('flex');
-    }
-  };
-
-  // Function to filter tools based on selected tags
-  const filterTools = () => {
-    const tools = document.querySelectorAll('.tool-card');
-    let visibleTools = 0;
-    const matchedResults = document.getElementById('matchedResults');
-    const matchCount = document.getElementById('matchCount');
-
-    // Track visible tools per category
-    const visibleCategoryCounts: Record<string, number> = {};
-
-    tools.forEach((tool) => {
-      const toolTags = (tool.getAttribute('data-tags') || '').split(',');
-      const toolCategory = tool.getAttribute('data-category');
-      const htmlTool = tool as HTMLElement;
-
-      // If no tags are selected, show all tools
-      if (selectedTags.size === 0) {
-        htmlTool.style.display = 'block';
-        htmlTool.style.opacity = '1';
-        htmlTool.classList.remove('filtered');
-        visibleTools++;
-        matchedResults?.classList.add('hidden');
-
-        // Show all category sections
-        document.querySelectorAll('[data-category-group]').forEach(section => {
-          (section as HTMLElement).style.display = 'block';
-        });
-        return;
-      }
-
-      // Check if tool has any of the selected tags
-      const hasSelectedTag = Array.from(selectedTags).some(
-        (tag) => toolTags.includes(tag as string)
-      );
-
-      if (hasSelectedTag) {
-        htmlTool.style.display = 'block';
-        htmlTool.style.opacity = '1';
-        htmlTool.classList.add('filtered');
-        visibleTools++;
-
-        // Count visible tools per category
-        if (toolCategory) {
-          visibleCategoryCounts[toolCategory] = (visibleCategoryCounts[toolCategory] || 0) + 1;
-        }
-      } else {
-        htmlTool.style.display = 'none';
-        htmlTool.style.opacity = '0';
-        htmlTool.classList.remove('filtered');
-      }
-    });
-
-    // Update category counts in sidebar
-    document.querySelectorAll('.category-group').forEach(button => {
-      const categories = button.getAttribute('data-categories')?.split(',');
-      const countSpan = button.querySelector('span:last-child');
-      if (categories && countSpan) {
-        if (categories.includes('all')) {
-          countSpan.textContent = visibleTools.toString();
-        } else {
-          const groupCount = categories.reduce((sum, cat) => 
-            sum + (visibleCategoryCounts[cat] || 0), 0);
-          countSpan.textContent = groupCount.toString();
-        }
-      }
-    });
-
-    // Update match count
-    if (selectedTags.size > 0) {
-      matchedResults?.classList.remove('hidden');
-      if (matchCount) {
-        matchCount.textContent = visibleTools.toString();
-      }
-    }
-
-    // Show all category sections by default when filtering by tags
-    if (selectedTags.size > 0) {
-      document.querySelectorAll('[data-category-group]').forEach(section => {
-        const hasVisibleTools = section.querySelector('.tool-card[style*="display: block"]');
-        if (hasVisibleTools) {
-          (section as HTMLElement).style.display = 'block';
-        }
-      });
-    }
-
-    // Toggle empty state
-    if (visibleTools === 0) {
-      emptyState?.classList.remove('hidden');
-    } else {
-      emptyState?.classList.add('hidden');
-    }
-
-    updateSelectedTagsDisplay();
-  };
-
-  // Function to clear all filters
-  const clearFilters = () => {
-    selectedTags.clear();
-    document.getElementById('matchedResults')?.classList.add('hidden');
-    
-    // Reset all tag buttons
-    document.querySelectorAll('.tag-button').forEach((button) => {
-      button.classList.remove('bg-indigo-100');
-    });
-
-    // Reset all tools to visible
-    document.querySelectorAll('.tool-card').forEach((tool) => {
-      const htmlTool = tool as HTMLElement;
-      htmlTool.style.display = '';
-      htmlTool.style.opacity = '1';
-    });
-
-    
-    filterTools();
-    updateSelectedTagsDisplay();
-    // Reload the window
-    window.location.reload();
-  };
-
-  // Handle dropdown visibility
-  groupContainers.forEach(container => {
-    const button = container.querySelector('.tag-group-button');
-    const dropdown = container.querySelector('.tag-dropdown');
-
-    button?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown?.classList.toggle('hidden');
-      
-      // Close other dropdowns
-      document.querySelectorAll('.tag-dropdown').forEach(d => {
-        if (d !== dropdown) d.classList.add('hidden');
-      });
-    });
-  });
-
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.tag-dropdown').forEach(dropdown => {
-      dropdown.classList.add('hidden');
-    });
-  });
-
-  // Add click handlers to tag buttons
-  document.querySelectorAll('.tag-button').forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const tag = button.getAttribute('data-tag');
-      if (!tag) return;
-
-      if (selectedTags.has(tag)) {
-        selectedTags.delete(tag);
-        button.classList.remove('bg-indigo-100');
-      } else {
-        selectedTags.add(tag);
-        button.classList.add('bg-indigo-100');
-      }
-
-      filterTools();
-    });
-  });
-
-  // Add click handler for remove buttons in selected tags
-  selectedTagsContainer?.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const removeButton = target.closest('.remove-tag');
-    if (!removeButton) return;
-
-    const tag = removeButton.getAttribute('data-tag');
-    if (!tag) return;
-
-    // Find and trigger click on corresponding tag button
-    document.querySelectorAll('.tag-button').forEach((button) => {
-      if (button.getAttribute('data-tag') === tag) {
-        (button as HTMLButtonElement).click();
-      }
-    });
-  });
-</script>
 
 <style>
   .group-container {
@@ -361,27 +86,6 @@ function getTagGroup(tag: string): string {
 </style>
 
 <script>
-  declare global {
-    interface Window {
-      filterTools: () => void;
-    }
-  }
-
-  const tagButtons = document.querySelectorAll('.tag-button');
-  
-  tagButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const tag = button.getAttribute('data-tag');
-      if (!tag) return;
-
-      // Toggle selection
-      button.classList.toggle('bg-indigo-100');
-      button.classList.toggle('text-indigo-700');
-
-      // Call the global filterTools function
-      if (typeof window.filterTools === 'function') {
-        window.filterTools();
-      }
-    });
-  });
+  import { setupTagsHandling } from '../utils/tagsHandler';
+  setupTagsHandling();
 </script>

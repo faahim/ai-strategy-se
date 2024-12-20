@@ -1,4 +1,5 @@
 ---
+import AsideComponent from '../components/AsideComponent.astro';
 import '../styles/global.css';
 ---
 
@@ -13,7 +14,15 @@ import '../styles/global.css';
 		<title>AI Tools</title>
 	</head>
 	<body>
+		<div class="flex">
+			<div class="w-1/4 fixed left-0 top-0">
+				<AsideComponent></AsideComponent>
+			</div>
+			<div class="w-3/4 ml-auto">
 		<slot />
+				
+			</div>
+		</div>
 	</body>
 </html>
 
