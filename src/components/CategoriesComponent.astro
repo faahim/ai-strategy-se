@@ -133,7 +133,7 @@ const groupCounts = groupCountsAndNames.reduce((acc, {group, count}) => {
   }
 
   // Make filterTools function available globally
-  window.filterTools = filterTools;
+  (window as any).filterTools = filterTools;
   
   categoryGroups.forEach(group => {
     group.addEventListener('click', () => {

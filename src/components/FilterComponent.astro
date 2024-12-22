@@ -4,6 +4,7 @@ import TagsComponent from './TagsComponent.astro';
 import ToolbarComponent from './ToolbarComponent.astro';
 import EmptyStateComponent from './EmptyStateComponent.astro';
 import CategoriesComponent from './CategoriesComponent.astro';
+import AsideComponent from './AsideComponent.astro';
 
 interface Tool {
   id: number;
@@ -110,7 +111,10 @@ const toolsByCategory = Object.values(categoryGroups)
 
 <div>
   <div class="flex h-screen max-w-full mx-auto">
-    
+    <AsideComponent>
+      <!-- Categories -->
+        <CategoriesComponent />
+    </AsideComponent>
 
     <main class="px-5 md:px-10 mt-10">
       <div class="text-left mb-5">
@@ -169,7 +173,7 @@ const toolsByCategory = Object.values(categoryGroups)
                       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {toolsByCategory[category].map((tool) => (
                           <div
-                            class="tool-card p-5 bg-white rounded-lg border border-gray-200 
+                            class="tool-card p-5 bg-white rounded-lg border border-gray-900/20 
                                hover:border-indigo-500 hover:bg-[#FBFAFF] 
                                hover:shadow-lg hover:shadow-indigo-500/20
                                hover:outline hover:outline-indigo-200 
