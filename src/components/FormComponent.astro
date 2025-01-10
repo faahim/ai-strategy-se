@@ -1,0 +1,370 @@
+<form class="bg-white p-6 rounded-md shadow-md flex flex-col gap-8">
+  <!-- Question 1 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      1. What do you want to achieve with AI?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="checkbox"
+          name="goal"
+          value="automate_tasks"
+          class="mr-2"
+        />
+        Automate repetitive tasks
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="goal"
+          value="better_decisions"
+          class="mr-2"
+        />
+        Make better decisions based on data
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="goal"
+          value="create_content"
+          class="mr-2"
+        />
+        Create and improve content (text, image, video)
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="goal"
+          value="enhance_experience"
+          class="mr-2"
+        />
+        Enhance the customer experience
+      </label>
+      <label class="block">
+        <input type="checkbox" name="goal" value="other" class="mr-2" />
+        Other (please specify)
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 2 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      2. What type of project or business does it concern?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="checkbox"
+          name="project_type"
+          value="ecommerce"
+          class="mr-2"
+        />
+        E-commerce
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="project_type"
+          value="marketing"
+          class="mr-2"
+        />
+        Digital marketing
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="project_type"
+          value="analytics"
+          class="mr-2"
+        />
+        Analytics and reporting
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="project_type"
+          value="creative_work"
+          class="mr-2"
+        />
+        Creative work (e.g., design, writing)
+      </label>
+      <label class="block">
+        <input type="checkbox" name="project_type" value="other" class="mr-2" />
+        Other (please specify)
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 3 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      3. What is your technical experience level with AI tools?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="radio"
+          name="experience_level"
+          value="beginner"
+          class="mr-2"
+          required
+        />
+        Beginner (need simple guidance)
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="experience_level"
+          value="intermediate"
+          class="mr-2"
+        />
+        Intermediate (looking for more advanced features)
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="experience_level"
+          value="advanced"
+          class="mr-2"
+        />
+        Advanced (looking for flexible and powerful solutions)
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 4 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      4. What type of task do you want AI to handle?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="checkbox"
+          name="tasks"
+          value="text_generation"
+          class="mr-2"
+        />
+        Text generation and copywriting
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="tasks"
+          value="image_creation"
+          class="mr-2"
+        />
+        Image or video editing and creation
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="tasks"
+          value="data_analysis"
+          class="mr-2"
+        />
+        Data analysis and insights
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="tasks"
+          value="workflow_automation"
+          class="mr-2"
+        />
+        Automating workflows and processes
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="tasks"
+          value="customer_support"
+          class="mr-2"
+        />
+        Improving customer support (e.g., chatbots)
+      </label>
+      <label class="block">
+        <input type="checkbox" name="tasks" value="other" class="mr-2" />
+        Other (please specify)
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 5 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      5. Which platform or tools do you already use?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="checkbox"
+          name="platforms"
+          value="google_workspace"
+          class="mr-2"
+        />
+        Google Workspace
+      </label>
+      <label class="block">
+        <input type="checkbox" name="platforms" value="crm" class="mr-2" />
+        CRM systems (e.g., Salesforce, HubSpot)
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="platforms"
+          value="email_tools"
+          class="mr-2"
+        />
+        Email tools (e.g., Mailchimp)
+      </label>
+      <label class="block">
+        <input type="checkbox" name="platforms" value="none" class="mr-2" />
+        No specific platform
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 6 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      6. What is your budget for AI tools?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input type="radio" name="budget" value="free" class="mr-2" required />
+        Free or budget-friendly tools
+      </label>
+      <label class="block">
+        <input type="radio" name="budget" value="premium" class="mr-2" />
+        Premium tools
+      </label>
+      <label class="block">
+        <input type="radio" name="budget" value="best_solution" class="mr-2" />
+        Best solution regardless of cost
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 7 (Checkbox) -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      7. Which of these challenges is most relevant to you?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="checkbox"
+          name="challenge"
+          value="time_savings"
+          class="mr-2"
+        />
+        Save time by automating tasks
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="challenge"
+          value="better_decisions"
+          class="mr-2"
+        />
+        Need insights and better decisions based on data
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="challenge"
+          value="increase_sales"
+          class="mr-2"
+        />
+        Increase sales or conversions
+      </label>
+      <label class="block">
+        <input
+          type="checkbox"
+          name="challenge"
+          value="improve_experience"
+          class="mr-2"
+        />
+        Improve customer experience or engagement
+      </label>
+    </div>
+  </fieldset>
+
+  <!-- Question 8 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      8. How important is quick implementation for you?
+    </legend>
+    <div class="border border-indigo-300 p-2 rounded mt-4">
+      <select
+        name="implementation_priority"
+        required
+        class="border-gray-300 rounded-md w-full">
+        <option value="1">Not urgent</option>
+        <option value="2">Low priority</option>
+        <option value="3">Medium priority</option>
+        <option value="4">High priority</option>
+        <option value="5">Highest priority</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <!-- Question 9 -->
+  <fieldset class="flex flex-col gap-4">
+    <legend class="text-lg font-semibold text-gray-700">
+      9. How do you measure the success of an AI strategy?
+    </legend>
+    <div class="flex flex-col gap-2 mt-4">
+      <label class="block">
+        <input
+          type="radio"
+          name="success_metric"
+          value="time_savings"
+          class="mr-2"
+          required
+        />
+        Time savings
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="success_metric"
+          value="cost_reduction"
+          class="mr-2"
+        />
+        Reduced costs
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="success_metric"
+          value="customer_satisfaction"
+          class="mr-2"
+        />
+        Improved customer satisfaction
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="success_metric"
+          value="revenue_increase"
+          class="mr-2"
+        />
+        Increased sales or revenue
+      </label>
+      <label class="block">
+        <input type="radio" name="success_metric" value="other" class="mr-2" />
+        Other (please specify)
+      </label>
+    </div>
+  </fieldset>
+
+  <button
+    type="submit"
+    class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700">
+    Submit
+  </button>
+</form>
