@@ -1,10 +1,10 @@
-<form class="bg-white p-6 rounded-md shadow-md flex flex-col gap-8">
+<form class="bg-white p-6 rounded-md max-w-lg shadow-md flex flex-col gap-8">
   <!-- Question 1 -->
   <fieldset class="flex flex-col gap-4">
     <legend class="text-lg font-semibold text-gray-700">
       1. What do you want to achieve with AI?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="checkbox"
@@ -53,7 +53,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       2. What type of project or business does it concern?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="checkbox"
@@ -102,7 +102,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       3. What is your technical experience level with AI tools?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="radio"
@@ -139,7 +139,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       4. What type of task do you want AI to handle?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="checkbox"
@@ -197,7 +197,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       5. Which platform or tools do you already use?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="checkbox"
@@ -232,7 +232,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       6. What is your budget for AI tools?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input type="radio" name="budget" value="free" class="mr-2" required />
         Free or budget-friendly tools
@@ -248,15 +248,15 @@
     </div>
   </fieldset>
 
-  <!-- Question 7 (Checkbox) -->
+  <!-- Question 7 (Radio Buttons) -->
   <fieldset class="flex flex-col gap-4">
     <legend class="text-lg font-semibold text-gray-700">
       7. Which of these challenges is most relevant to you?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
-          type="checkbox"
+          type="radio"
           name="challenge"
           value="time_savings"
           class="mr-2"
@@ -265,7 +265,7 @@
       </label>
       <label class="block">
         <input
-          type="checkbox"
+          type="radio"
           name="challenge"
           value="better_decisions"
           class="mr-2"
@@ -274,7 +274,7 @@
       </label>
       <label class="block">
         <input
-          type="checkbox"
+          type="radio"
           name="challenge"
           value="increase_sales"
           class="mr-2"
@@ -283,7 +283,7 @@
       </label>
       <label class="block">
         <input
-          type="checkbox"
+          type="radio"
           name="challenge"
           value="improve_experience"
           class="mr-2"
@@ -293,22 +293,62 @@
     </div>
   </fieldset>
 
-  <!-- Question 8 -->
+  <!-- Question 8 (Radio Buttons) -->
   <fieldset class="flex flex-col gap-4">
     <legend class="text-lg font-semibold text-gray-700">
       8. How important is quick implementation for you?
     </legend>
-    <div class="border border-indigo-300 p-2 rounded mt-4">
-      <select
-        name="implementation_priority"
-        required
-        class="border-gray-300 rounded-md w-full">
-        <option value="1">Not urgent</option>
-        <option value="2">Low priority</option>
-        <option value="3">Medium priority</option>
-        <option value="4">High priority</option>
-        <option value="5">Highest priority</option>
-      </select>
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
+      <label class="block">
+        <input
+          type="radio"
+          name="implementation_priority"
+          value="1"
+          required
+          class="mr-2"
+        />
+        Not urgent
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="implementation_priority"
+          value="2"
+          required
+          class="mr-2"
+        />
+        Low priority
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="implementation_priority"
+          value="3"
+          required
+          class="mr-2"
+        />
+        Medium priority
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="implementation_priority"
+          value="4"
+          required
+          class="mr-2"
+        />
+        High priority
+      </label>
+      <label class="block">
+        <input
+          type="radio"
+          name="implementation_priority"
+          value="5"
+          required
+          class="mr-2"
+        />
+        Highest priority
+      </label>
     </div>
   </fieldset>
 
@@ -317,7 +357,7 @@
     <legend class="text-lg font-semibold text-gray-700">
       9. How do you measure the success of an AI strategy?
     </legend>
-    <div class="flex flex-col gap-2 mt-4">
+    <div class="border border-indigo-200 bg-gray-200 p-4 rounded mt-4 flex flex-col gap-2">
       <label class="block">
         <input
           type="radio"
